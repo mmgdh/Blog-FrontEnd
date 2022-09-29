@@ -31,7 +31,6 @@
             <a-form-item name="DefaultImage" label="分类图片">
                 <a-upload v-model:file-list="fileList" list-type="picture" :max-count="1" :before-upload="beforeUpload">
                     <a-button>
-                        <upload-one></upload-one>
                         Upload (Max: 1)
                     </a-button>
                 </a-upload>
@@ -56,7 +55,6 @@ import { useRouter } from 'vue-router'
 import { message } from 'ant-design-vue';
 import { useArticleStore } from '../../Store/ArticleStore'
 import type { UploadProps } from 'ant-design-vue';
-import { UploadOne } from '@icon-park/vue-next';
 
 const fileList = ref<UploadProps['fileList']>([]);
 let router = useRouter();

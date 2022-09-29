@@ -25,13 +25,14 @@
     </div>
     <div class="main-grid">
       <div ref="articleRef" class="BlogContent">
-        <MdEditor id="markdownContent" v-model="content" :editorId="state.id" preview-only
+        <MdEditor  id="markdownContent" v-model="content" :editorId="state.id" preview-only
           class="mdStyle hvr-float-shadow" />
+          <!-- <div id="markdownContent" v-html="CurArticle.html"></div> -->
       </div>
-      <div class="rightContent">
+      <div>
         <Introduction></Introduction>
         <Catalog class="right-box">
-          <div id="toc">12132131</div>
+          <div id="toc" class="ttt">刷新</div>
         </Catalog>
 
 
@@ -43,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, onBeforeUnmount,nextTick } from 'vue';
 import MdEditor from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 import { useRoute } from 'vue-router'
@@ -52,7 +53,7 @@ import { useAppStore } from '../../../Store/AppStore';
 import { storeToRefs } from 'pinia';
 import Introduction from '../BlogContent/IndexRightContent/Introduction.vue'
 import Catalog from '../BlogContent/IndexRightContent/catalog.vue'
-import tocbot from 'tocbot'
+import * as tocbot from 'tocbot'
 let router = useRoute();
 let ArticleId: string;
 let content = ref('');
@@ -62,27 +63,33 @@ const articleRef = ref()
 
 onMounted(() => {
   console.log('获取dom元素', articleRef.value)
-  initTocbot();
+  // initTocbot();
 })
-
+onBeforeUnmount(() => {
+  tocbot.destroy()
+})
 const initTocbot = () => {
-  let nodes = articleRef.value.children
+  var nodes =document.getElementById('my-editor-preview')?.children as HTMLCollection
+  // let nodes = articleRef.value.children
+  console.log(nodes,articleRef.value);
   if (nodes.length) {
     for (let i = 0; i < nodes.length; i++) {
       let node = nodes[i]
-      let reg = /^H[1-4]{1}$/
+      let reg = /^H[1-6]{1}$/
       if (reg.exec(node.tagName)) {
-        node.id = i
+        node.id = i.toString()
       }
     }
   }
+ 
 
   tocbot.init({
     tocSelector: '#toc',
-    contentSelector: '#markdownContent',
-    headingSelector: 'h1, h2, h3',
-    hasInnerContainers: true,
-    positionFixedClass: 'is-position-fixed',
+    contentSelector: '#my-editor-preview',
+    headingSelector: 'h1, h2',
+    scrollSmooth: true,
+    scrollSmoothOffset: -80,
+    headingsOffset: -500,
     onClick: function (e) {
       e.preventDefault()
     }
@@ -102,10 +109,14 @@ const refParamStore = storeToRefs(ParamStore);
 let CurArticle = ref(_Article)
 ArticleId = router.query.ArticleId as string;
 
-ArticleService.prototype.GetArticleById(ArticleId, true, false).then(ret => {
+ArticleService.prototype.GetArticleById(ArticleId, true, true).then(ret => {
   CurArticle.value = ret;
   content.value = ret.content;
-  // initTocbot()
+
+  nextTick(() => {
+    initTocbot()
+    tocbot.refresh()
+  })
   // tocbot.refresh()
 
 });
@@ -116,9 +127,10 @@ const state = reactive({
 });
 
 </script>
-<style scoped lang="less">
+<style lang="less">
 @import '../../../CSS/Box.less';
-
+@import 'tocbot/dist/tocbot.css';
+@import 'md-editor-v3/lib/style.css';
 .MdContainerStyle {
   display: flex;
   flex-direction: column;
@@ -207,22 +219,6 @@ const state = reactive({
     color: var(--text-bright);
   }
 
-  .RightContent {
-    .catalogContainer {
-      margin-bottom: 1rem;
-      background-color: var(--background-secondary);
-      border-radius: 1rem;
-      margin-bottom: 2rem;
-      padding: 2rem;
-      position: relative;
-      --tw-shadow: 0 20px 25px -5px rgba(0, 0, 0, .1), 0 10px 10px -5px rgba(0, 0, 0, .04);
-      box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-      width: 100%;
-
-      .catalogContent {}
-    }
-  }
-
   #markdownContent {
     word-wrap: break-word;
     word-break: break-all;
@@ -262,6 +258,99 @@ const state = reactive({
     }
   }
 }
+
+
+.ttt>ol {
+  list-style: none;
+  counter-reset: li;
+  padding-left: 1.5rem;
+
+  >li {
+    font: bold;
+
+    &.is-active-li>.node-name--H1 {
+      color: var(--text-accent);
+    }
+
+    &.is-active-li>.node-name--H2 {
+      color: var(--text-accent);
+    }
+
+    &.is-active-li>.node-name--H3 {
+      color: var(--text-accent);
+    }
+  }
+
+  ol li {
+    font-weight: 600;
+    // @apply font-semibold mt-1.5 mb-1.5;
+    padding-left: 1.5rem;
+
+    &.is-active-li>.node-name--H2 {
+      color: var(--text-accent);
+    }
+
+    &.is-active-li>.node-name--H3 {
+      color: var(--text-accent);
+    }
+
+    ol li {
+      font-weight: 600;
+      // @apply font-medium mt-1.5 mb-1.5;
+      padding-left: 1.5rem;
+
+      &.is-active-li .node-name--H3 {
+        color: var(--text-accent);
+      }
+    }
+  }
+
+  ol,
+  ol ol {
+    position: relative;
+  }
+
+  >li::before,
+  ol>li::before,
+  ol ol>li::before,
+  ol ol ol>li::before,
+  ol ol ol ol>li::before {
+    content: '•';
+    color: var(--text-accent);
+    display: inline-block;
+    width: 1em;
+    margin-left: -1.15em;
+    padding: 0;
+    font-weight: bold;
+    text-shadow: 0 0 0.5em var(--accent-2);
+  }
+
+  >li::before {
+    font-size: large // @apply text-xl;
+  }
+
+  >li>ol::before,
+  >li>ol>li>ol::before {
+    content: '';
+    border-left: 1px solid var(--text-accent);
+    position: absolute;
+    opacity: 0.35;
+    left: -1em;
+    top: 0;
+    bottom: 0;
+  }
+
+  >li>ol::before {
+    left: -1.25em;
+    border-left: 2px solid var(--text-accent);
+  }
+}
+
+// .is-collapsible {
+//   max-height: 1000px;
+//   overflow: hidden;
+//   transition: all 300ms ease-in-out;
+// }
 
 @media (min-width:1024px) {
   .main-grid {
