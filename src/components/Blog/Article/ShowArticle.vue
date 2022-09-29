@@ -69,27 +69,27 @@ onBeforeUnmount(() => {
   tocbot.destroy()
 })
 const initTocbot = () => {
-  var nodes =document.getElementById('my-editor-preview')?.children as HTMLCollection
-  // let nodes = articleRef.value.children
-  console.log(nodes,articleRef.value);
-  if (nodes.length) {
-    for (let i = 0; i < nodes.length; i++) {
-      let node = nodes[i]
-      let reg = /^H[1-6]{1}$/
-      if (reg.exec(node.tagName)) {
-        node.id = i.toString()
-      }
-    }
-  }
+  // var nodes =document.getElementById('my-editor-preview')?.children as HTMLCollection
+  // // let nodes = articleRef.value.children
+  // console.log(nodes,articleRef.value);
+  // if (nodes.length) {
+  //   for (let i = 0; i < nodes.length; i++) {
+  //     let node = nodes[i]
+  //     let reg = /^H[1-6]{1}$/
+  //     if (reg.exec(node.tagName)) {
+  //       node.id = i.toString()
+  //     }
+  //   }
+  // }
  
 
   tocbot.init({
     tocSelector: '#toc',
-    contentSelector: '#my-editor-preview',
-    headingSelector: 'h1, h2',
+    contentSelector: '#markdownContent',
+    headingSelector: 'h1, h2,h3',
     scrollSmooth: true,
     scrollSmoothOffset: -80,
-    headingsOffset: -500,
+    // headingsOffset: -500,
     onClick: function (e) {
       e.preventDefault()
     }
