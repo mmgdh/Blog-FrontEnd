@@ -1,0 +1,34 @@
+:root {
+  --MAXWidth: 500px;
+  --Max-Width: var(--MAXWidth);
+  --header_gradient_css: linear-gradient(130deg, #24c6dc, #5433ff 41.07%, #ff0099 76.05%);
+  --gap: 2rem;
+}
+.relative {
+  position: relative;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+.box-border {
+  box-sizing: border-box;
+}
+@media (min-width: 1024px) {
+  .inverted-main-grid {
+    display: grid;
+    grid-template-columns: 245px minmax(0, 1fr);
+  }
+}
+.inverted-main-grid,
+.main-grid {
+  display: flex;
+  flex-direction: column;
+}
+.gradient-font {
+  background: linear-gradient(130deg, #24c6dc, #5433ff 41.07%, #ff0099 76.05%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  background-clip: text;
+}
