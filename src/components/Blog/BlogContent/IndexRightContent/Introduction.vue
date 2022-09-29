@@ -8,7 +8,7 @@
 
       </div>
       <div class="linkCSS">
-        <!-- <github class="col" theme="outline" size="40" /> -->
+        <github-outlined class="col" :style="{fontSize: '3rem'}" />
       </div>
       <div class="detail">
         <div class="col">
@@ -35,6 +35,7 @@ import { useArticleStore } from '../../../../Store/ArticleStore';
 import { onBeforeMount, ref } from 'vue'
 import { storeToRefs } from 'pinia';
 import { watch } from 'vue';
+import { GithubOutlined } from '@ant-design/icons-vue';
 
 const ParamStore = useAppStore();
 const refParamStore = storeToRefs(ParamStore);

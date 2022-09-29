@@ -1,9 +1,12 @@
 <template>
   <Toggle :status="defaultStatus" @changeStatus="handleChange">
     <template v-if="theme === 'theme-light'">
+      <BulbFilled class="iconStyle" :style="{color: 'yellow'}" />
+
       <!-- <sun-one theme="filled" :style="svg" size="15" :fill="svgStyle.fill"/> -->
     </template>
     <template v-else>
+      <bulb-outlined class="iconStyle" />
       <!-- <moon theme="filled" size="15" :style="svg" :fill="svgStyle.fill"/> -->
     </template>
 
@@ -14,6 +17,8 @@
 import { computed, ref } from 'vue'
 import Toggle from './Toggle.vue'
 import { useAppStore } from '../../../../Store/AppStore'
+import { BulbOutlined } from '@ant-design/icons-vue';
+import { BulbFilled } from '@ant-design/icons-vue';
 // import {SunOne,Moon} from '@icon-park/vue-next';
 
 const appStore = useAppStore()
@@ -33,5 +38,10 @@ const handleChange = (status: boolean) => {
 </script>
 
 <style lang="less" scoped>
-
+.iconStyle {
+  margin-left: 3.5px;
+  .light{
+    color: yellow;
+  }
+}
 </style>

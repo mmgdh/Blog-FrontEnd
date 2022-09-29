@@ -1,7 +1,4 @@
 <template>
-  <div ref="test">
-    <h1>hahah</h1>
-  </div>
   <router-view ></router-view>
 </template>
 <script setup lang="ts">
@@ -23,10 +20,6 @@ onBeforeMount(async () => {
   await ArticleStore.GetClassifies();
   await ArticleStore.GetArticleCount();
 
-})
-const test=ref()
-onMounted(()=>{
-  console.log('测试ref',test.value.children)
 })
 </script>
 <style lang="less">

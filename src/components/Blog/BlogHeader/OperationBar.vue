@@ -29,5 +29,6 @@ let topage = (url: string) => {
 }
 .pointer{
     cursor: pointer;
+    padding-right: 1rem;
 }
 </style>
