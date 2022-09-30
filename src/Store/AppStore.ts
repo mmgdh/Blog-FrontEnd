@@ -1,8 +1,11 @@
-import { ref } from 'vue'
+import { ref,getCurrentInstance } from 'vue'
 import { defineStore } from 'pinia'
 import { BlogParam } from '../Entities/E_BlogParam'
 import BlogInfoService from '../Services/BlogInfoService'
 import UploadService from '../Services/UploadService'
+import * as signalR from "@microsoft/signalr";
+
+
 
 
 
@@ -39,9 +42,6 @@ export const useAppStore = defineStore('AppStore', {
             }
             return ret;
         },
-        BlogParameters() {
-            return BlogParamArray
-        }
     },
     actions: {
         async GetAllParameter() {

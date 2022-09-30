@@ -382,21 +382,21 @@ const state = reactive({
   background: var(--header_gradient_css);
 }
 
-#my-editor-preview ol>li:before,
-#my-editor-preview ul ol>li:before,
-#my-editor-preview ul ul ol>li:before,
-#my-editor-preview ul ul ul ol>li:before {
-  content: "." counter(li);
-  color: var(--text-accent);
-  font-weight: 400;
-  display: inline-block;
-  width: 1em;
-  margin-left: -1.5em;
-  margin-right: .5em;
-  text-align: right;
-  direction: rtl;
-  overflow: visible;
-  word-break: keep-all;
-  white-space: nowrap;
-}
+// #my-editor-preview ol>li:before,
+// #my-editor-preview ul ol>li:before,
+// #my-editor-preview ul ul ol>li:before,
+// #my-editor-preview ul ul ul ol>li:before {
+//   content: "." counter(li);
+//   color: var(--text-accent);
+//   font-weight: 400;
+//   display: inline-block;
+//   width: 1em;
+//   margin-left: -1.5em;
+//   margin-right: .5em;
+//   text-align: right;
+//   direction: rtl;
+//   overflow: visible;
+//   word-break: keep-all;
+//   white-space: nowrap;
+// }
 </style>

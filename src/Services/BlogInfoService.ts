@@ -1,5 +1,5 @@
 import { BlogParam } from '../Entities/E_BlogParam';
-import { get, post, Delete, put } from './_Service'
+import { get, post, Delete, put, getUri } from './_Service'
 
 const controler = "BlogParameter";
 
@@ -22,11 +22,16 @@ export default class BlogInfoService {
         return await get(controler + "/GetBlogParameters")
     }
 
-    public async GetBlogParameter(ParamName:string): Promise<BlogParam> {
-        return await get(controler + "/GetBlogParameter",{ParamName:ParamName})
+    public async GetBlogParameter(ParamName: string): Promise<BlogParam> {
+        return await get(controler + "/GetBlogParameter", { ParamName: ParamName })
     }
 
-    public async RefreshBlogParameter():Promise<boolean>{
-        return await post(controler+ "/RefreshBlogParameter")
+    public async RefreshBlogParameter(): Promise<boolean> {
+        return await post(controler + "/RefreshBlogParameter")
+    }
+
+    getBlogInfoHubUri() {
+        var ret = getUri() + "/" + 'SignalR' +"/BlogInfoHub";
+        return ret;
     }
 }

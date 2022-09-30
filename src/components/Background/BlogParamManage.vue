@@ -47,8 +47,7 @@ import { storeToRefs } from 'pinia';
 
 const ParamStore = useAppStore();
 const refStore = storeToRefs(ParamStore);
-let Ref_BlogParamList = refStore.BlogParameters;
-console.log(Ref_BlogParamList.value);
+let Ref_BlogParamList = refStore.AllBlogParam;
 let Ref_Current = ref(1);
 let curRecord = ref({} as BlogParam);
 let submitBlogParam = ref({} as BlogParam);

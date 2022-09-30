@@ -24,6 +24,7 @@
 <script setup lang="ts">
 import BlogMenu from './BlogHeader/BlogMenu.vue'
 import { useRouter } from 'vue-router'
+import '../../SignalR/AppSignalR'
 document.documentElement.setAttribute('data-theme', 'theme-light')
 let router = useRouter()
 router.push('/BlogIndex')
