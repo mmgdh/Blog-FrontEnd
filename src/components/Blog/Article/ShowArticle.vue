@@ -25,14 +25,14 @@
     </div>
     <div class="main-grid">
       <div ref="articleRef" class="BlogContent">
-        <MdEditor  id="markdownContent" v-model="content" :editorId="state.id" preview-only
+        <MdEditor id="markdownContent" v-model="content" :editorId="state.id" preview-only
           class="mdStyle hvr-float-shadow" />
-          <!-- <div id="markdownContent" v-html="CurArticle.html"></div> -->
+        <!-- <div id="markdownContent" v-html="CurArticle.html"></div> -->
       </div>
       <div>
         <Introduction></Introduction>
         <Catalog class="right-box">
-          <div id="toc" class="ttt">刷新</div>
+          <div id="toc" class="tocbotCss">刷新</div>
         </Catalog>
 
 
@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, onBeforeUnmount,nextTick } from 'vue';
+import { ref, reactive, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import MdEditor from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 import { useRoute } from 'vue-router'
@@ -81,12 +81,12 @@ const initTocbot = () => {
   //     }
   //   }
   // }
- 
+
 
   tocbot.init({
     tocSelector: '#toc',
     contentSelector: '#markdownContent',
-    headingSelector: 'h1, h2,h3',
+    headingSelector: 'h1, h2',
     scrollSmooth: true,
     scrollSmoothOffset: -80,
     // headingsOffset: -500,
@@ -131,6 +131,7 @@ const state = reactive({
 @import '../../../CSS/Box.less';
 @import 'tocbot/dist/tocbot.css';
 @import 'md-editor-v3/lib/style.css';
+
 .MdContainerStyle {
   display: flex;
   flex-direction: column;
@@ -215,9 +216,9 @@ const state = reactive({
     }
   }
 
-  .BlogContent {
-    color: var(--text-bright);
-  }
+  // .BlogContent {
+  //   color: var(--text-bright);
+  // }
 
   #markdownContent {
     word-wrap: break-word;
@@ -260,7 +261,7 @@ const state = reactive({
 }
 
 
-.ttt>ol {
+.tocbotCss>ol {
   list-style: none;
   counter-reset: li;
   padding-left: 1.5rem;
@@ -363,5 +364,39 @@ const state = reactive({
       padding: 3.5rem;
     }
   }
+}
+
+
+#my-editor-preview h1:after,
+#my-editor-preview h2:after,
+#my-editor-preview h3:after,
+#my-editor-preview h4:after,
+#my-editor-preview h5:after,
+#my-editor-preview h6:after {
+  border-radius: 9999px;
+  height: .25rem;
+  position: absolute;
+  bottom: 0;
+  width: 6rem;
+  content: "";
+  background: var(--header_gradient_css);
+}
+
+#my-editor-preview ol>li:before,
+#my-editor-preview ul ol>li:before,
+#my-editor-preview ul ul ol>li:before,
+#my-editor-preview ul ul ul ol>li:before {
+  content: "." counter(li);
+  color: var(--text-accent);
+  font-weight: 400;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1.5em;
+  margin-right: .5em;
+  text-align: right;
+  direction: rtl;
+  overflow: visible;
+  word-break: keep-all;
+  white-space: nowrap;
 }
 </style>

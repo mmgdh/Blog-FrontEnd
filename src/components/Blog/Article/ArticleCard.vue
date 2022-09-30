@@ -96,7 +96,7 @@ watch(refParamStore.HeadPortrait,(newValue,oldValue)=>{
         --tw-scale-x: 1;
         --tw-scale-y: 1;
         transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-        background: var(--main-gradient);
+        background: var(--header_gradient_css);
         z-index: 0;
         transition: transform .2s ease-in-out;
     }
