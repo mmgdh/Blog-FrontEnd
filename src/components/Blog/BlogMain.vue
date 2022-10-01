@@ -1,6 +1,7 @@
 <template>
     <div class="BlogBody">
-        <div class="banner"></div>
+        <div class="banner banner-image" :style="BackGroundImg"></div>
+        <div class="banner banner-screen"></div>
 
         <div class="BlogContainer">
             <BlogMenu class="BlogMenu"></BlogMenu>
@@ -12,7 +13,7 @@
             <div class="FootContainer">
                 <div class="FootContent">
                     <p>个人博客系统</p>
-                    <p>公安备案：</p>
+                    <p>公安备案：{{ICP}}</p>
                 </div>
 
             </div>
@@ -25,9 +26,32 @@
 import BlogMenu from './BlogHeader/BlogMenu.vue'
 import { useRouter } from 'vue-router'
 import '../../SignalR/AppSignalR'
-document.documentElement.setAttribute('data-theme', 'theme-light')
-let router = useRouter()
+import { onBeforeMount, onMounted } from 'vue';
+import { useAppStore } from '../../Store/AppStore'
+import { computed } from '@vue/reactivity';
+import { storeToRefs } from 'pinia';
+
+const AppStore = useAppStore()
+const refParamStore = storeToRefs(AppStore);
+AppStore.toggleTheme(true)
+
+let router = useRouter();
 router.push('/BlogIndex')
+AppStore.SetBannerImg('')
+
+const ICP=AppStore.GetParameterValue('Blog-ICP')
+
+const BackGroundImg = computed(() => {
+    if (AppStore.BackGroudImgUrl == '') {
+        return {opacity: 1};
+    }
+    else {
+        return {
+            backgroundImage: `url( ${AppStore.BackGroudImgUrl})`,
+            opacity: 1
+        }
+    }
+})
 
 </script>
 <style lang="less">
@@ -66,9 +90,21 @@ a {
     position: relative;
     font-family: Rubik, Avenir, Helvetica, Arial, sans-serif;
 
+    .banner-image {
+        background-image: url('../../Img/default-cover.jpg');
+        z-index: 1;
+        background-size: cover;
+        transition: ease-in-out opacity 300ms;
+    }
+
+    .banner-screen {
+        background: var(--header_gradient_css);
+        transition: ease-in-out opacity 300ms;
+        z-index: 2;
+        opacity: 0.91;
+    }
+
     .banner {
-        background: linear-gradient(130deg, rgb(36, 198, 220), rgb(84, 51, 255) 41.07%, rgb(255, 0, 153) 76.05%);
-        opacity: 0.99;
         content: '';
         display: block;
         height: 600px;
@@ -192,6 +228,7 @@ a {
     z-index: 10;
     position: relative;
     display: block;
+    margin-top: 1rem;
 }
 
 .BlogFooter {

@@ -8,7 +8,8 @@
 
       </div>
       <div class="linkCSS">
-        <github-outlined class="col" :style="{fontSize: '3rem'}" />
+        <github-outlined class="col" :style="{fontSize: '3rem'}" @click="GitClick" />
+
       </div>
       <div class="detail">
         <div class="col">
@@ -47,6 +48,9 @@ watch(refParamStore.HeadPortrait, (newValue, oldValue) => {
 })
 
 
+const GitClick=()=>{
+  window.open("https://github.com/mmgdh");
+}
 
 </script>
 <style scoped lang="less">

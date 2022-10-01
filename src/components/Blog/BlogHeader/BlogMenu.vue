@@ -7,10 +7,10 @@
             </div>
             <nav class="nav">
                 <div class="container">
-                    <ul>
+                    <!-- <ul>
                         <li><a href="#" class="current">Home</a> </li>
                         <li><a @click="topage('/BlogManage')">管理</a> </li>
-                    </ul>
+                    </ul> -->
                 </div>
             </nav>
         </div>

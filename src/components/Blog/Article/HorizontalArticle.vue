@@ -1,32 +1,38 @@
 <template>
-    <div v-if="articledata" class="feature-article hvr-grow" @click="router.push({
-      path: 'ShowArticle',
-      query: { 'ArticleId': articledata.id }
-    })">
-        <div class=" feature-thumbnail">
-            <img v-if="articledata" :src="ImgUrl + articledata.imageId" />
-            <img v-else src="../../../Img/backgroud.png" />
-            <span class="thumbnail-screen"></span>
-        </div>
-        <div class="feature-content" v-if="articledata">
-            <span>
-                <b> {{articledata.classify.classifyName}} </b>
-                <ul v-for="tag in articledata.tags">
-                    <li><em>#{{tag.tagName}}</em></li>
-                </ul>
-            </span>
-            <h1>{{articledata.title}}</h1>
-            <p>{{articledata.description}}</p>
-            <div class="article-footer">
-                <div class="flex-center">
-                    <img :src="refPictureUrl" alt="">
-                    <span class="text-color-dim">
-                        <strong class="text-color-normal">{{AuthorName}}</strong> 发布于 {{articledata.createDateTime}}
-                    </span>
+    <div class="article-container">
+        <span class="article-tag">
+            <b><pushpin-outlined /> Top</b>
+        </span>
+        <div v-if="articledata" class="feature-article" @click="router.push({
+          path: 'ShowArticle',
+          query: { 'ArticleId': articledata.id }
+        })">
+            <div class="feature-thumbnail">
+                <img v-if="articledata" :src="ImgUrl + articledata.imageId" />
+                <img v-else src="../../../Img/backgroud.png" />
+                <span class="thumbnail-screen"></span>
+            </div>
+            <div class="feature-content" v-if="articledata">
+                <span>
+                    <b> {{articledata.classify.classifyName}} </b>
+                    <ul v-for="tag in articledata.tags">
+                        <li><em>#{{tag.tagName}}</em></li>
+                    </ul>
+                </span>
+                <h1>{{articledata.title}}</h1>
+                <p>{{articledata.description}}</p>
+                <div class="article-footer">
+                    <div class="flex-center">
+                        <img :src="refPictureUrl" alt="">
+                        <span class="text-color-dim">
+                            <strong class="text-color-normal">{{AuthorName}}</strong> 发布于 {{articledata.createDateTime}}
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 </template>
 
 <script setup lang='ts'>
@@ -36,6 +42,7 @@ import { Article } from '../../../Entities/E_Article';
 import UploadService from "../../../Services/UploadService"
 import { useAppStore } from '../../../Store/AppStore';
 import { storeToRefs } from 'pinia';
+import { PushpinOutlined } from '@ant-design/icons-vue';
 const ImgUrl = UploadService.prototype.getImageUri()
 let router = useRouter()
 const { articledata } = defineProps<{
@@ -53,11 +60,10 @@ watch(refParamStore.HeadPortrait, (newValue, oldValue) => {
 
 <style scoped lang="less">
 
+@import '../../../CSS/Article.less';
+
 @ComputerHeight: 28rem;
 @phoneHeight: 120%;
-
-
-
 
 
 .feature-article {

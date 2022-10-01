@@ -193,7 +193,7 @@ const onFinish = (values: Article) => {
 //#endregion
 </script>
 
-<style>
+<style scoped>
 #BlogButton {
     height: 80px;
     display: flex;

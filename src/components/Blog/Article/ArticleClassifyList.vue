@@ -1,11 +1,11 @@
 <template>
   <ul class="ClassifyTab">
     <li id="All" class="active">
-      <span :style="activeTabStyle('All')" @click="activeTabId='All'">全部</span>
+      <span :style="activeTabStyle('All')" @click="clickFunc('All')">全部</span>
       <b>{{AllArticleCount}}</b>
     </li>
     <li v-for="classify in ArticleClassifies" :key="classify.id">
-      <span :style="activeTabStyle(classify.id)" @click="activeTabId=classify.id">
+      <span :style="activeTabStyle(classify.id)" @click="clickFunc(classify.id)">
         {{classify.classifyName}}
       </span>
       <b>{{classify.articleCount}}</b>
@@ -30,10 +30,14 @@ let AllArticleCount = refArticleStore.AllArticleCount;
 let activeTabId = ref('All')
 
 const clickFunc = (Id: string) => {
+  activeTabId.value = Id
+  var ClassifyIds: string[] = []
+  if (Id != 'All') {
+    ClassifyIds.push(activeTabId.value)
+  }
   ArticleStore.$patch((state) => {
     state.PageRequestParm.page = 1;
-    state.PageRequestParm.ClassifyIds = [];
-    state.PageRequestParm.ClassifyIds.push(Id);
+    state.PageRequestParm.ClassifyIds = ClassifyIds;
   });
 }
 

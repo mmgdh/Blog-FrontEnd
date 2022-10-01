@@ -1,7 +1,10 @@
 <template>
-    <div v-if="ArticleData" class="article-container hvr-grow">
-        <span class="article-tag">
-            <b>Test</b>
+    <div v-if="ArticleData" class="article-container" @click="router.push({
+      path: 'ShowArticle',
+      query: { 'ArticleId': ArticleData.id }
+    })">
+        <span v-show="showTitle" class="article-tag">
+            <b><fire-outlined /> Feature</b>
         </span>
         <div class="article">
             <div class="article-thumbnail">
@@ -34,26 +37,38 @@
 </template>
 
 <script setup lang="ts">
-import { ref,watch } from 'vue'
+import { ref, watch } from 'vue'
 import { Article } from '../../../Entities/E_Article';
 import UploadService from "../../../Services/UploadService"
 import { useAppStore } from '../../../Store/AppStore';
+import { useArticleStore } from '../../../Store/ArticleStore';
 import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router'
+import { FireOutlined } from '@ant-design/icons-vue';
 
+let router = useRouter()
 
 const ImgUrl = UploadService.prototype.getImageUri()
 const { ArticleData } = defineProps<{
     ArticleData: Article
 }>()
 const ParamStore = useAppStore();
-const refParamStore=storeToRefs(ParamStore)
+const ArticleStore =useArticleStore();
+const refParamStore = storeToRefs(ParamStore)
+var showTitle =ref(false)
+ArticleStore.RecommemtArticle.then(res=>{
+    showTitle.value=res.findIndex(x=>x.id==ArticleData.id)>-1
+})
 var refPictureUrl = ref(`${refParamStore.HeadPortrait.value}`);
 const AuthorName = refParamStore.AuthorName;
-watch(refParamStore.HeadPortrait,(newValue,oldValue)=>{
+watch(refParamStore.HeadPortrait, (newValue, oldValue) => {
     refPictureUrl.value = `${newValue}`;
 })
 </script>
 <style scoped lang='less'>
+
+@import '../../../CSS/Article.less';
+
 @media (min-width: 1024px) {
     .feature-article .feature-content h1 {
         font-size: 2.25rem;
@@ -69,162 +84,140 @@ watch(refParamStore.HeadPortrait,(newValue,oldValue)=>{
     list-style-type: none;
     position: relative;
 
-    .article-tag {
-        border-radius: .375rem;
-        display: flex;
-        align-items: flex-start;
-        font-weight: 700;
-        font-size: .875rem;
-        line-height: 1.25rem;
-        padding-left: .25rem;
-        padding-right: .25rem;
-        padding-top: .25rem;
-        padding-bottom: .75rem;
-        position: absolute;
-        left: 1.5rem;
-        top: -.25rem;
+    .article {
+        background-color: var(--background-secondary);
+        border-radius: 1rem;
+        display: grid;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+        top: 0;
         --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05);
         box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-        --tw-text-opacity: 1;
-        color: rgba(255, 255, 255, var(--tw-text-opacity));
-        text-transform: uppercase;
-        --tw-translate-x: 0;
-        --tw-translate-y: 0;
-        --tw-rotate: 0;
-        --tw-skew-x: 0;
-        --tw-skew-y: 0;
-        --tw-scale-x: 1;
-        --tw-scale-y: 1;
-        transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-        background: var(--header_gradient_css);
-        z-index: 0;
+        z-index: 10;
+        grid-template-rows: repeat(3, minmax(0, 1fr));
         transition: transform .2s ease-in-out;
+
+        .article-thumbnail {
+            position: relative;
+            grid-row: span 1/span 1;
+
+            img {
+                background-repeat: no-repeat;
+                background-size: cover;
+                display: block;
+                -o-object-fit: cover;
+                object-fit: cover;
+                position: absolute;
+                left: 0;
+                width: 120%;
+                height: 120%;
+                z-index: 20;
+
+            }
+
+            .thumbnail-screen {
+                height: 120%;
+                opacity: .4;
+                pointer-events: none;
+                position: absolute;
+                left: 0;
+                width: 100%;
+                z-index: 30;
+                max-width: 120%;
+                mix-blend-mode: screen;
+                background: linear-gradient(130deg, rgb(36, 198, 220), rgb(84, 51, 255) 41.07%, rgb(255, 0, 153) 76.05%);
+            }
+        }
+
+        .article-thumbnail:after {
+            pointer-events: none;
+            content: "";
+            position: absolute;
+            z-index: 35;
+            top: 13%;
+            left: 0;
+            height: 120%;
+            width: 100%;
+            background: var(--article-cover);
+        }
+
+        .article-content {
+            background-color: transparent;
+            display: flex;
+            flex-direction: column;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+            padding-bottom: 1.5rem;
+            position: relative;
+            z-index: 40;
+            grid-row: span 2/span 2;
+
+
+
+
+            h1 {
+                font-weight: 800;
+                font-size: 1.5rem;
+                line-height: 2rem;
+                color: var(--text-bright);
+
+                margin-top: 1rem;
+                margin-bottom: 1.25rem;
+            }
+
+            p {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp:5;
+                -webkit-box-orient:vertical;
+                font-size: 1rem;
+            }
+
+            span {
+                filter: drop-shadow(0 2px 1px rgba(0, 0, 0, .1));
+
+                ul {
+                    display: inline-flex;
+                    font-size: .75rem;
+                    line-height: 1rem;
+                    padding-left: 1rem;
+                }
+
+                b {
+                    font-size: .75rem;
+                    line-height: 1rem;
+                    color: var(--text-accent);
+                    text-transform: uppercase;
+                }
+            }
+
+            .article-footer {
+                display: flex;
+                align-items: flex-end;
+                align-content: flex-end;
+                justify-content: flex-start;
+                flex: 1 1 0%;
+                font-size: .875rem;
+                line-height: 1.25rem;
+                width: 100%;
+                margin-top: 1rem;
+
+                img {
+                    border-radius: 9999px;
+                    margin-right: 0.5rem;
+                    height: 28px;
+                    width: 28px;
+                    cursor: pointer;
+                    max-width: 100%;
+                }
+            }
+        }
     }
 }
 
-.article {
-    background-color: var(--background-secondary);
-    border-radius: 1rem;
-    display: grid;
-    height: 100%;
-    overflow: hidden;
-    position: relative;
-    top: 0;
-    --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-    z-index: 10;
-    grid-template-rows: repeat(3, minmax(0, 1fr));
-    transition: transform .2s ease-in-out;
-
-    .article-thumbnail {
-        position: relative;
-        grid-row: span 1/span 1;
-
-        img {
-            background-repeat: no-repeat;
-            background-size: cover;
-            display: block;
-            -o-object-fit: cover;
-            object-fit: cover;
-            position: absolute;
-            left: 0;
-            width: 120%;
-            height: 120%;
-            z-index: 20;
-
-        }
-
-        .thumbnail-screen {
-            height: 120%;
-            opacity: .4;
-            pointer-events: none;
-            position: absolute;
-            left: 0;
-            width: 100%;
-            z-index: 30;
-            max-width: 120%;
-            mix-blend-mode: screen;
-            background: linear-gradient(130deg, rgb(36, 198, 220), rgb(84, 51, 255) 41.07%, rgb(255, 0, 153) 76.05%);
-        }
-    }
-
-    .article-thumbnail:after {
-        pointer-events: none;
-        content: "";
-        position: absolute;
-        z-index: 35;
-        top: 13%;
-        left: 0;
-        height: 120%;
-        width: 100%;
-        background: var(--article-cover);
-    }
-
-    .article-content {
-        background-color: transparent;
-        display: flex;
-        flex-direction: column;
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-        padding-bottom: 1.5rem;
-        position: relative;
-        z-index: 40;
-        grid-row: span 2/span 2;
-
-
-
-
-        h1 {
-            font-weight: 800;
-            font-size: 1.5rem;
-            line-height: 2rem;
-            color: var(--text-bright);
-
-            margin-top: 1rem;
-            margin-bottom: 1.25rem;
-        }
-
-        p {
-            font-size: 1rem;
-        }
-
-        span {
-            filter: drop-shadow(0 2px 1px rgba(0, 0, 0, .1));
-
-            ul {
-                display: inline-flex;
-                font-size: .75rem;
-                line-height: 1rem;
-                padding-left: 1rem;
-            }
-
-            b {
-                font-size: .75rem;
-                line-height: 1rem;
-                color: var(--text-accent);
-                text-transform: uppercase;
-            }
-        }
-
-        .article-footer {
-            display: flex;
-            align-items: flex-end;
-            align-content: flex-end;
-            justify-content: flex-start;
-            flex: 1 1 0%;
-            font-size: .875rem;
-            line-height: 1.25rem;
-            width: 100%;
-
-            img {
-                border-radius: 9999px;
-                margin-right: 0.5rem;
-                height: 28px;
-                width: 28px;
-                cursor: pointer;
-                max-width: 100%;
-            }
-        }
-    }
+.article-container:hover {
+    cursor: pointer;
 }
 </style>

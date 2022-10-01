@@ -1,5 +1,5 @@
 <template>
-  <div class="MdContainerStyle ">
+  <div v-if="CurArticle" class="MdContainerStyle ">
     <div class="main-grid">
       <div class="Blog-header">
         <span class="Blog-labels">
@@ -13,9 +13,9 @@
         <h1 class="Blog-title">{{ CurArticle.title }}</h1>
         <div class="Blog-Author">
           <div class="flex-center">
-            <img :src="refParamStore.HeadPortrait.value" alt="">
+            <img :src="refAppStore.HeadPortrait.value" alt="">
             <span class="text-color-dim">
-              <strong class="text-color-normal">{{refParamStore.AuthorName.value}}</strong> 发布于
+              <strong class="text-color-normal">{{refAppStore.AuthorName.value}}</strong> 发布于
               {{CurArticle.createDateTime}}
             </span>
           </div>
@@ -25,8 +25,7 @@
     </div>
     <div class="main-grid">
       <div ref="articleRef" class="BlogContent">
-        <MdEditor id="markdownContent" v-model="content" :editorId="state.id" preview-only
-          class="mdStyle hvr-float-shadow" />
+        <MdEditor id="markdownContent" v-model="content" preview-only class="mdStyle hvr-float-shadow" />
         <!-- <div id="markdownContent" v-html="CurArticle.html"></div> -->
       </div>
       <div>
@@ -44,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import { ref, reactive, onMounted, onBeforeUnmount, nextTick, onUpdated, watch } from 'vue';
 import MdEditor from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 import { useRoute } from 'vue-router'
@@ -59,17 +58,12 @@ let ArticleId: string;
 let content = ref('');
 let _Article: any = undefined
 
-const articleRef = ref()
-
-onMounted(() => {
-  console.log('获取dom元素', articleRef.value)
-  // initTocbot();
-})
 onBeforeUnmount(() => {
   tocbot.destroy()
 })
+const IsLoadingOver = ref()
 const initTocbot = () => {
-  // var nodes =document.getElementById('my-editor-preview')?.children as HTMLCollection
+  // var nodes =document.getElementById('md-editor-v3-preview')?.children as HTMLCollection
   // // let nodes = articleRef.value.children
   // console.log(nodes,articleRef.value);
   // if (nodes.length) {
@@ -86,10 +80,10 @@ const initTocbot = () => {
   tocbot.init({
     tocSelector: '#toc',
     contentSelector: '#markdownContent',
-    headingSelector: 'h1, h2',
+    headingSelector: 'h1, h2,h3',
     scrollSmooth: true,
-    scrollSmoothOffset: -80,
-    // headingsOffset: -500,
+    // scrollSmoothOffset: -300,
+    headingsOffset: -400,
     onClick: function (e) {
       e.preventDefault()
     }
@@ -102,9 +96,8 @@ const initTocbot = () => {
   //   })
   // }
 }
-
-const ParamStore = useAppStore();
-const refParamStore = storeToRefs(ParamStore);
+const AppStore = useAppStore();
+const refAppStore = storeToRefs(AppStore);
 
 let CurArticle = ref(_Article)
 ArticleId = router.query.ArticleId as string;
@@ -112,20 +105,15 @@ ArticleId = router.query.ArticleId as string;
 ArticleService.prototype.GetArticleById(ArticleId, true, true).then(ret => {
   CurArticle.value = ret;
   content.value = ret.content;
-
+  AppStore.SetBannerImg(ret.imageId)
+  window.scrollTo({
+    top: 0
+  })
   nextTick(() => {
     initTocbot()
-    tocbot.refresh()
+    IsLoadingOver.value = true
   })
-  // tocbot.refresh()
-
 });
-const state = reactive({
-  theme: 'dark',
-  text: '标题',
-  id: 'my-editor'
-});
-
 </script>
 <style lang="less">
 @import '../../../CSS/Box.less';
@@ -229,34 +217,6 @@ const state = reactive({
     padding: 1rem;
     --tw-shadow: 0 20px 25px -5px rgba(0, 0, 0, .1), 0 10px 10px -5px rgba(0, 0, 0, .04);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-
-    h1 {
-      font-size: 1.875rem;
-      line-height: 2.25rem;
-      color: var(--text-bright);
-    }
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      display: flex;
-      align-items: center;
-      margin-bottom: 1rem;
-      padding-bottom: .5rem;
-      padding-top: 1.75rem;
-      position: relative;
-      color: var(--text-bright);
-      font-weight: 600;
-
-
-    }
-
-    a {
-      color: var(--text-bright);
-    }
   }
 }
 
@@ -347,11 +307,6 @@ const state = reactive({
   }
 }
 
-// .is-collapsible {
-//   max-height: 1000px;
-//   overflow: hidden;
-//   transition: all 300ms ease-in-out;
-// }
 
 @media (min-width:1024px) {
   .main-grid {
@@ -366,37 +321,137 @@ const state = reactive({
   }
 }
 
+#md-editor-v3-preview {
 
-#my-editor-preview h1:after,
-#my-editor-preview h2:after,
-#my-editor-preview h3:after,
-#my-editor-preview h4:after,
-#my-editor-preview h5:after,
-#my-editor-preview h6:after {
-  border-radius: 9999px;
-  height: .25rem;
-  position: absolute;
-  bottom: 0;
-  width: 6rem;
-  content: "";
-  background: var(--header_gradient_css);
+  p {
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+    line-height: 2;
+
+    code {
+      color: var(--text-normal);
+      margin: 0;
+      border-radius: 3px;
+      overflow-wrap: break-word;
+      background-color: var(--bg-accent-05);
+      word-wrap: break-word;
+      padding: 0.1rem 0.3rem;
+      border-radius: 0.3rem;
+      color: var(--text-accent) !important;
+
+      .code-block {
+        color: var(--text-normal);
+      }
+    }
+  }
+
+  blockquote {
+    position: relative;
+    padding: 0.5rem 1rem 0.5rem 2rem;
+    color: var(--text-normal);
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    margin-bottom: 2em;
+    margin-top: 2em;
+    margin-right: 0 !important;
+    border-left: 3px var(--text-accent) solid;
+    border-top: transparent;
+    border-bottom: transparent;
+    border-right: transparent;
+    background: linear-gradient(135deg, var(--background-primary), var(--background-primary) 41.07%, var(--background-secondary) 76.05%, var(--background-secondary));
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 76%;
+      background: linear-gradient(90deg, var(--text-accent), var(--background-secondary) 76.05%);
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      width: 45%;
+      background: linear-gradient(90deg, var(--text-accent), var(--background-primary) 45%);
+    }
+  }
+
+  hr {
+    position: relative;
+    -webkit-margin-before: 0;
+    margin-block-start: 0;
+    -webkit-margin-after: 0;
+    margin-block-end: 0;
+    border: none;
+    height: 1px;
+    padding: 2.5em 0;
+
+    &:before {
+      content: "§";
+      display: inline-block;
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, -44%) rotate(60deg);
+      transform-origin: 50% 50%;
+      color: var(--text-sub-accent);
+      background-color: var(--background-secondary);
+      z-index: 10;
+      padding: 0.25rem;
+      border-radius: 60%;
+    }
+
+    &:after {
+      position: absolute;
+      content: "";
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--header_gradient_css);
+      height: 3px;
+      width: 26%;
+      border-radius: 9999px;
+      opacity: .26;
+      margin: 2.5em auto;
+    }
+  }
+
+
+
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: .5rem;
+    padding-top: 1.75rem;
+    position: relative;
+    color: var(--text-bright);
+    font-weight: 600;
+  }
+
+  h1:after,
+  h2:after,
+  h3:after,
+  h4:after,
+  h5:after,
+  h6:after {
+    border-radius: 9999px;
+    height: .25rem;
+    position: absolute;
+    bottom: 0;
+    width: 6rem;
+    content: "";
+    background: var(--header_gradient_css);
+  }
 }
-
-// #my-editor-preview ol>li:before,
-// #my-editor-preview ul ol>li:before,
-// #my-editor-preview ul ul ol>li:before,
-// #my-editor-preview ul ul ul ol>li:before {
-//   content: "." counter(li);
-//   color: var(--text-accent);
-//   font-weight: 400;
-//   display: inline-block;
-//   width: 1em;
-//   margin-left: -1.5em;
-//   margin-right: .5em;
-//   text-align: right;
-//   direction: rtl;
-//   overflow: visible;
-//   word-break: keep-all;
-//   white-space: nowrap;
-// }
 </style>

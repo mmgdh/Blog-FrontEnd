@@ -1,9 +1,6 @@
 <template>
   <ul class="ArticleList">
-    <li v-for="_Article in Ref_ArticleList" :key="_Article.id" @click="router.push({
-      path: 'ShowArticle',
-      query: { 'ArticleId': _Article.id }
-    })">
+    <li v-for="_Article in Ref_ArticleList" :key="_Article.id">
       <ArticleCardVue :ArticleData="_Article">
 
       </ArticleCardVue>
@@ -12,26 +9,21 @@
 
   <div class="PageStyle">
     <a-pagination :show-quick-jumper="false" v-model="refPage.page" :total="1" :page-size='pageRequest.pageSize'
-      show-less-items @change="onChange" />
+      show-less-items @change="onChange" class="paginationCSS" />
   </div>
 </template>
 
 <script setup lang='ts'>
 import { ref, onBeforeMount, watch } from 'vue'
-import ArticleService from '../../../Services/ArticleService';
-import { Article } from '../../../Entities/E_Article'
-import { useRouter } from 'vue-router'
-import { ClockCircleOutlined } from '@ant-design/icons-vue'
 import { useArticleStore } from '../../../Store/ArticleStore'
 import { storeToRefs } from 'pinia';
 import ArticleCardVue from './ArticleCard.vue';
 
 let ArticleStore = useArticleStore();
-let router = useRouter()
 let refStore = storeToRefs(ArticleStore);
 let refPage = refStore.PageRequestParm;
 let Ref_ArticleList = refStore.CurPageArticles;
-let ArticleCount = refStore.CurArticleCount ?? 0;
+let ArticleCount = refStore.CurArticleCount;
 let ShowQuikJumper = ref(false)
 console.log(Ref_ArticleList.value)
 
@@ -39,8 +31,8 @@ watch(refPage.value, () => {
   ArticleStore.GetArticleByPage();
 })
 
-watch(ArticleCount.value, (newvalue, oldvalue) => {
-  if (newvalue > 30) {
+watch(ArticleCount, (newvalue, oldvalue) => {
+  if (ArticleCount.value.MAX_VALUE > 30) {
     ShowQuikJumper.value = true;
   }
 })
@@ -64,7 +56,7 @@ const ToDate = (DateTime: Date) => {
 
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .ArticleList {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -88,6 +80,7 @@ const ToDate = (DateTime: Date) => {
 }
 
 .PageStyle {
+  
   display: flex;
   align-items: center;
   justify-content: center;

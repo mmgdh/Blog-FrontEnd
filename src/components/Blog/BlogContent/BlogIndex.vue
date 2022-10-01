@@ -27,6 +27,11 @@ import Title from '../../common/Title.vue';
 import TagsVue from './IndexRightContent/Tags.vue';
 import Notice from './IndexRightContent/Notice.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
+import {useAppStore} from '../../../Store/AppStore'
+
+const AppStore=useAppStore();
+
+AppStore.SetBannerImg('')
 
 </script>
 <style scoped>

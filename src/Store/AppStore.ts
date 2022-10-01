@@ -1,4 +1,4 @@
-import { ref,getCurrentInstance } from 'vue'
+import { ref, getCurrentInstance } from 'vue'
 import { defineStore } from 'pinia'
 import { BlogParam } from '../Entities/E_BlogParam'
 import BlogInfoService from '../Services/BlogInfoService'
@@ -14,7 +14,6 @@ const setTheme = (theme: string) => {
 }
 
 let BlogParamArray: BlogParam[] = [];
-let IsLoading: boolean = false;
 
 export const useAppStore = defineStore('AppStore', {
     state: () => {
@@ -23,7 +22,8 @@ export const useAppStore = defineStore('AppStore', {
                 theme: 'theme-light',
                 header_gradient_css: 'var(--header_gradient_css)'
             },
-            AllBlogParam: BlogParamArray
+            AllBlogParam: BlogParamArray,
+            BackGroudImgUrl: ''
         }
     },
     getters: {
@@ -41,17 +41,15 @@ export const useAppStore = defineStore('AppStore', {
                 ret = UploadService.prototype.getImageUri() + pictureId
             }
             return ret;
-        },
+        }
     },
     actions: {
         async GetAllParameter() {
-            IsLoading = true;
             this.AllBlogParam = await BlogInfoService.prototype.GetAllBlogParameters();
-            IsLoading = false;
         },
-        async GetParameterValue(paramName: string) {
+        GetParameterValue(paramName: string) {
 
-            if (this.AllBlogParam.length == undefined || this.AllBlogParam.length == 0) await this.GetAllParameter();
+            if (this.AllBlogParam.length == undefined || this.AllBlogParam.length == 0) return '';
             return this.AllBlogParam.find(x => x.paramName == paramName)?.paramValue;
         },
 
@@ -61,6 +59,13 @@ export const useAppStore = defineStore('AppStore', {
             // Cookies.set('theme', this.theme)
             setTheme(this.themeConfig.theme)
         },
+
+        SetBannerImg(pictureId: string) {
+            if (pictureId != '')
+                this.BackGroudImgUrl = UploadService.prototype.getImageUri() + pictureId
+            else
+                this.BackGroudImgUrl = ''
+        }
     }
 
 }

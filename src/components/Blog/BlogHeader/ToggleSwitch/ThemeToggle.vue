@@ -1,5 +1,5 @@
 <template>
-  <Toggle :status="defaultStatus" @changeStatus="handleChange">
+  <Toggle :status="appStore.themeConfig.theme === 'theme-dark'" @changeStatus="handleChange">
     <template v-if="theme === 'theme-light'">
       <BulbFilled class="iconStyle" :style="{color: 'yellow'}" />
 
@@ -22,7 +22,6 @@ import { BulbFilled } from '@ant-design/icons-vue';
 // import {SunOne,Moon} from '@icon-park/vue-next';
 
 const appStore = useAppStore()
-let defaultStatus = appStore.themeConfig.theme === 'theme-dark' ? true : false
 let theme = computed(() => {
   return appStore.themeConfig.theme
 })

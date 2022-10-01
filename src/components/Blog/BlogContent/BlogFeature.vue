@@ -16,7 +16,7 @@ var FeatureArtilcle: any = undefined;
 var refFeatureArticle = ref(FeatureArtilcle)
 let ArticleStore = useArticleStore();
 let refStore = storeToRefs(ArticleStore);
-refStore.FeatureArticle.value.then(res => {
+refStore.TopArticle.value.then(res => {
     refFeatureArticle.value = res;
 })
 </script>
