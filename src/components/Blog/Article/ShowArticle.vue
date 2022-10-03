@@ -25,7 +25,7 @@
     </div>
     <div class="main-grid">
       <div ref="articleRef" class="BlogContent">
-        <MdEditor id="markdownContent" v-model="content" preview-only class="mdStyle hvr-float-shadow" />
+        <MdEditor id="markdownContent" v-model="content" preview-only class="hvr-float-shadow" />
         <!-- <div id="markdownContent" v-html="CurArticle.html"></div> -->
       </div>
       <div>
@@ -119,6 +119,7 @@ ArticleService.prototype.GetArticleById(ArticleId, true, true).then(ret => {
 @import '../../../CSS/Box.less';
 @import 'tocbot/dist/tocbot.css';
 @import 'md-editor-v3/lib/style.css';
+@import '../../../CSS/MarkDown.less';
 
 .MdContainerStyle {
   display: flex;
@@ -318,140 +319,6 @@ ArticleService.prototype.GetArticleById(ArticleId, true, true).then(ret => {
       margin-bottom: 0;
       padding: 3.5rem;
     }
-  }
-}
-
-#md-editor-v3-preview {
-
-  p {
-    margin-top: 0.75rem;
-    margin-bottom: 0.75rem;
-    line-height: 2;
-
-    code {
-      color: var(--text-normal);
-      margin: 0;
-      border-radius: 3px;
-      overflow-wrap: break-word;
-      background-color: var(--bg-accent-05);
-      word-wrap: break-word;
-      padding: 0.1rem 0.3rem;
-      border-radius: 0.3rem;
-      color: var(--text-accent) !important;
-
-      .code-block {
-        color: var(--text-normal);
-      }
-    }
-  }
-
-  blockquote {
-    position: relative;
-    padding: 0.5rem 1rem 0.5rem 2rem;
-    color: var(--text-normal);
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    margin-bottom: 2em;
-    margin-top: 2em;
-    margin-right: 0 !important;
-    border-left: 3px var(--text-accent) solid;
-    border-top: transparent;
-    border-bottom: transparent;
-    border-right: transparent;
-    background: linear-gradient(135deg, var(--background-primary), var(--background-primary) 41.07%, var(--background-secondary) 76.05%, var(--background-secondary));
-
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 2px;
-      width: 76%;
-      background: linear-gradient(90deg, var(--text-accent), var(--background-secondary) 76.05%);
-    }
-
-    &::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      height: 2px;
-      width: 45%;
-      background: linear-gradient(90deg, var(--text-accent), var(--background-primary) 45%);
-    }
-  }
-
-  hr {
-    position: relative;
-    -webkit-margin-before: 0;
-    margin-block-start: 0;
-    -webkit-margin-after: 0;
-    margin-block-end: 0;
-    border: none;
-    height: 1px;
-    padding: 2.5em 0;
-
-    &:before {
-      content: "§";
-      display: inline-block;
-      position: absolute;
-      left: 50%;
-      transform: translate(-50%, -44%) rotate(60deg);
-      transform-origin: 50% 50%;
-      color: var(--text-sub-accent);
-      background-color: var(--background-secondary);
-      z-index: 10;
-      padding: 0.25rem;
-      border-radius: 60%;
-    }
-
-    &:after {
-      position: absolute;
-      content: "";
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--header_gradient_css);
-      height: 3px;
-      width: 26%;
-      border-radius: 9999px;
-      opacity: .26;
-      margin: 2.5em auto;
-    }
-  }
-
-
-
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-    padding-bottom: .5rem;
-    padding-top: 1.75rem;
-    position: relative;
-    color: var(--text-bright);
-    font-weight: 600;
-  }
-
-  h1:after,
-  h2:after,
-  h3:after,
-  h4:after,
-  h5:after,
-  h6:after {
-    border-radius: 9999px;
-    height: .25rem;
-    position: absolute;
-    bottom: 0;
-    width: 6rem;
-    content: "";
-    background: var(--header_gradient_css);
   }
 }
 </style>

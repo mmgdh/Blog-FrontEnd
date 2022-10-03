@@ -43,7 +43,11 @@
           <a-breadcrumb-item>User</a-breadcrumb-item>
           <a-breadcrumb-item>Bill</a-breadcrumb-item>
         </a-breadcrumb>
-        <router-view></router-view>
+
+        <router-view>
+        </router-view>
+
+
       </a-layout-content>
       <a-layout-footer style="text-align: center">
         MMGDH-Blog@2022
@@ -57,7 +61,7 @@ import {
   TeamOutlined,
   FileOutlined,
 } from '@ant-design/icons-vue';
-import {  ref } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router'
 
 let router = useRouter()

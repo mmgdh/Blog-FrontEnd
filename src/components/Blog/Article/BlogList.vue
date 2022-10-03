@@ -8,7 +8,7 @@
   </ul>
 
   <div class="PageStyle">
-    <a-pagination :show-quick-jumper="false" v-model="refPage.page" :total="1" :page-size='pageRequest.pageSize'
+    <a-pagination :show-quick-jumper="false" v-model="refPage.page" :total="ArticleCount" :page-size='pageRequest.pageSize'
       show-less-items @change="onChange" class="paginationCSS" />
   </div>
 </template>
@@ -25,21 +25,20 @@ let refPage = refStore.PageRequestParm;
 let Ref_ArticleList = refStore.CurPageArticles;
 let ArticleCount = refStore.CurArticleCount;
 let ShowQuikJumper = ref(false)
-console.log(Ref_ArticleList.value)
 
 watch(refPage.value, () => {
   ArticleStore.GetArticleByPage();
 })
 
 watch(ArticleCount, (newvalue, oldvalue) => {
-  if (ArticleCount.value.MAX_VALUE > 30) {
+  if (ArticleCount.value > 30) {
     ShowQuikJumper.value = true;
   }
 })
 
 ArticleStore.$patch((state) => {
   state.PageRequestParm.page = 1;
-  state.PageRequestParm.pageSize = 6
+  state.PageRequestParm.pageSize = 9
 });
 
 
@@ -59,7 +58,7 @@ const ToDate = (DateTime: Date) => {
 <style scoped lang="less">
 .ArticleList {
   display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
+  grid-template-columns: repeat(1, 1fr);
   gap: 2rem;
 
 }
@@ -68,13 +67,13 @@ const ToDate = (DateTime: Date) => {
 
 @media (min-width: 768px) {
   .ArticleList {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (min-width: 1280px) {
   .ArticleList {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, 1fr);
   }
 
 }

@@ -1,5 +1,5 @@
 <template>
-    <Md id="MdStyle" v-model="content" @on-upload-img="onUploadImg" @on-html-changed="onHtmlChanged"></Md>
+    <Md id="markdownContent" v-model="content" @on-upload-img="onUploadImg" @on-html-changed="onHtmlChanged"></Md>
 
     <div id="BlogButton">
         <a-button shape="round" type="primary" @click="showDrawer">提交</a-button>
@@ -177,7 +177,7 @@ const onFinish = (values: Article) => {
     }
     else {
         ArticleService.prototype.AddArticle(formdata).then((res) => {
-            if (res.msg == "") {
+            if (res.msg != "") {
                 message.success("保存成功!")
                 router.push("/ArticleManage");
             }
@@ -193,7 +193,9 @@ const onFinish = (values: Article) => {
 //#endregion
 </script>
 
-<style scoped>
+<style lang="less">
+//  @import '../../CSS/MarkDown.less';
+
 #BlogButton {
     height: 80px;
     display: flex;
@@ -202,7 +204,14 @@ const onFinish = (values: Article) => {
     gap: 20px;
 }
 
-#MdStyle {
+#markdownContent {
     height: 80vh;
+    #md-editor-v3-preview{
+        h1,h2,h3,h4,h5,h6{
+            color: black;
+        }
+
+    }
+
 }
 </style>

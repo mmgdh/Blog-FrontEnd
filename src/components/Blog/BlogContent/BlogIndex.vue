@@ -27,9 +27,9 @@ import Title from '../../common/Title.vue';
 import TagsVue from './IndexRightContent/Tags.vue';
 import Notice from './IndexRightContent/Notice.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
-import {useAppStore} from '../../../Store/AppStore'
+import { useAppStore } from '../../../Store/AppStore'
 
-const AppStore=useAppStore();
+const AppStore = useAppStore();
 
 AppStore.SetBannerImg('')
 
@@ -40,6 +40,7 @@ AppStore.SetBannerImg('')
 .IndexContainer {
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .IndexRightContent {

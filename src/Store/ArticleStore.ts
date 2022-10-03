@@ -20,9 +20,9 @@ export const useArticleStore = defineStore('Article', {
       Classifies: {
 
       } as Array<ArticleClassify>,
-      CurArticleCount: Number,
+      CurArticleCount: 0,
       CurPageArticles: ArticleArray,
-      AllArticleCount: Number,
+      AllArticleCount: 0,
       PageRequestParm: {
         page: 1,
         pageSize: 10,
@@ -35,7 +35,7 @@ export const useArticleStore = defineStore('Article', {
   getters: {
     TopArticle: async (state): Promise<Article> => {
       const AppStore = useAppStore();
-      var TopArticleId = AppStore.GetParameterValue('Blog-TopArticle');
+      var TopArticleId =await AppStore.GetParameterValueAsync('Blog-TopArticle');
       if (TopArticleId) {
         return await ArticleService.prototype.GetArticleById(TopArticleId);
       }
@@ -43,7 +43,7 @@ export const useArticleStore = defineStore('Article', {
     },
     RecommemtArticle: async (state): Promise<Article[]> => {
       const AppStore = useAppStore();
-      var strArticleId = AppStore.GetParameterValue('Blog-RcommentArticle');
+      var strArticleId = await AppStore.GetParameterValueAsync('Blog-RcommentArticle');
       const ArticleIds = strArticleId?.split(',');
       if (ArticleIds) {
         return await ArticleService.prototype.GetArticlesById(ArticleIds);

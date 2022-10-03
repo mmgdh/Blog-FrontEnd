@@ -1,0 +1,191 @@
+>md-editor-v3是一款使用TypeScript开发，高度支持Vue3的MarkDown编辑器，开发方便快捷。 
+官网地址：https://imzbf.github.io/md-editor-v3/index
+
+# 安装
+```
+yarn add md-editor-v3
+或
+npm install md-editor-v3
+```
+
+#使用
+
+## 编辑页面
+```
+<template>
+<Md id="markdownContent" v-model="content" @on-upload-img="onUploadImg" @on-html-changed="onHtmlChanged"></Md>
+</template>
+<script setup lang='ts'>
+import Md from 'md-editor-v3'
+
+const content = ref<string>('');
+let html = '';
+
+const onHtmlChanged = (_html: string) => {
+    html = _html;
+}
+//MarkDown图片上传功能
+const onUploadImg = async (files: any, callback: any) => {
+    const res = await Promise.all(
+        files.map((file: any) => {
+            return new Promise((rev, rej) => {
+                const form = new FormData();
+                form.append('file', file);
+                form.append('UploadType', '文章内容图片');
+                UploadService.prototype.UploadImg(form)
+                    .then((res: any) => rev(UploadService.prototype.getImageUri() + res))
+                    .catch((error: any) => rej(error));
+            });
+        })
+    );
+    callback(res.map((item) => item));
+};
+</script>
+
+```
+1. 绑定content值获取编辑内容
+2. 绑定图片上传方法onUploadImg，实现编辑时的图片上传
+3. 绑定Html变更方法，获取html值
+
+## 浏览页面
+
+```
+<template>
+    <MdEditor id="markdownContent" v-model="content" preview-only />
+</template>
+<script setup lang='ts'>
+import MdEditor from 'md-editor-v3';
+</script>
+<style lang='less'>
+#md-editor-v3-preview {
+    p {
+        margin-top: 0.75rem;
+        margin-bottom: 0.75rem;
+        line-height: 2;
+
+        code {
+            color: var(--text-normal);
+            margin: 0;
+            border-radius: 3px;
+            overflow-wrap: break-word;
+            background-color: var(--bg-accent-05);
+            word-wrap: break-word;
+            padding: 0.1rem 0.3rem;
+            border-radius: 0.3rem;
+            color: var(--text-accent) !important;
+
+            .code-block {
+                color: var(--text-normal);
+            }
+        }
+    }
+
+    blockquote {
+        position: relative;
+        padding: 0.5rem 1rem 0.5rem 2rem;
+        color: var(--text-normal);
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        margin-bottom: 2em;
+        margin-top: 2em;
+        margin-right: 0 !important;
+        border-left: 3px var(--text-accent) solid;
+        border-top: transparent;
+        border-bottom: transparent;
+        border-right: transparent;
+        background: linear-gradient(135deg, var(--background-primary), var(--background-primary) 41.07%, var(--background-secondary) 76.05%, var(--background-secondary));
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 2px;
+            width: 76%;
+            background: linear-gradient(90deg, var(--text-accent), var(--background-secondary) 76.05%);
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            width: 45%;
+            background: linear-gradient(90deg, var(--text-accent), var(--background-primary) 45%);
+        }
+    }
+
+    hr {
+        position: relative;
+        -webkit-margin-before: 0;
+        margin-block-start: 0;
+        -webkit-margin-after: 0;
+        margin-block-end: 0;
+        border: none;
+        height: 1px;
+        padding: 2.5em 0;
+
+        &:before {
+            content: "§";
+            display: inline-block;
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, -44%) rotate(60deg);
+            transform-origin: 50% 50%;
+            color: var(--text-sub-accent);
+            background-color: var(--background-secondary);
+            z-index: 10;
+            padding: 0.25rem;
+            border-radius: 60%;
+        }
+
+        &:after {
+            position: absolute;
+            content: "";
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--header_gradient_css);
+            height: 3px;
+            width: 26%;
+            border-radius: 9999px;
+            opacity: .26;
+            margin: 2.5em auto;
+        }
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: .5rem;
+        padding-top: 1.75rem;
+        position: relative;
+        color: var(--text-bright);
+        font-weight: 600;
+    }
+    h1:after,
+    h2:after,
+    h3:after,
+    h4:after,
+    h5:after,
+    h6:after {
+        border-radius: 9999px;
+        height: .25rem;
+        position: absolute;
+        bottom: 0;
+        width: 6rem;
+        content: "";
+        background: var(--header_gradient_css);
+    }
+}
+</style>
+```
+1. 绑定编辑页面获取的content值
+2. 将MarkDown设置为preview-only，它将只显示浏览页
+3. 给MarkDown里的标签设置CSS效果，使页面更美观，#md-editor-v3-preview是markdown生成html后默认赋的id

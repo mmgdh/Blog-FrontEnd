@@ -1,0 +1,45 @@
+> 现在的时代，网页除了在PC端要有精美的画面，也要考虑手机端的页面适应。
+本博客使用@media+Grid布局+rem实现
+>1. **rem**: rem其实是一个单位 ，是个相对单位 root em。rem就是root（根元素的大小）相对于html元素的字体大小的单位。
+2. **@media**：@media 查询，可以针对不同的媒体类型定义不同的样式。
+3. **Grid布局**:Grid布局即网格布局，是一种新的css模型，一般是将一个页面划分成几个主要的区域，定义这些区域的大小、位置和层次等关系，是目前唯一一种css二维布局。
+
+# 在博文展示页面使用
+```
+<template>
+  <ul class="ArticleList">
+    <li v-for="_Article in Ref_ArticleList" :key="_Article.id">
+      <ArticleCardVue :ArticleData="_Article">
+
+      </ArticleCardVue>
+    </li>
+  </ul>
+</template>
+<script>
+</script>
+<style scoped lang="less">
+.ArticleList {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 2rem;
+
+}
+
+
+
+@media (min-width: 768px) {
+  .ArticleList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .ArticleList {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+}
+</style>
+```
+1. 设置ArticleList为Grid布局， repeat(1, minmax(0, 1fr))：显示一个元素，最大值宽度为1fr，最小为0。1fr等于等分后的剩余空间。
+2. 

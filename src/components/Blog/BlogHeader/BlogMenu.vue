@@ -66,7 +66,10 @@ let topage = (url: string) => {
     cursor: pointer;
 
     .logoBottom {
-        font-size: 10px;
+        font-size: .75rem;
+        line-height: 1rem;
+        text-transform: uppercase;
+        font-weight: 800;
     }
 }
 

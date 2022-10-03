@@ -52,6 +52,11 @@ export const useAppStore = defineStore('AppStore', {
             if (this.AllBlogParam.length == undefined || this.AllBlogParam.length == 0) return '';
             return this.AllBlogParam.find(x => x.paramName == paramName)?.paramValue;
         },
+        async GetParameterValueAsync(paramName: string) {
+
+            if (this.AllBlogParam.length == undefined || this.AllBlogParam.length == 0) await BlogInfoService.prototype.GetAllBlogParameters();
+            return this.AllBlogParam.find(x => x.paramName == paramName)?.paramValue;
+        },
 
         toggleTheme(isDark?: boolean) {
             this.themeConfig.theme =

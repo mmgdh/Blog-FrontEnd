@@ -16,7 +16,7 @@
                     <b>{{ArticleData.classify.classifyName}}</b>
                     <ul>
                         <li v-for="Tag in ArticleData.tags" :key="Tag.id">
-                            <em>#{{Tag.tagName}}</em>
+                            <em>[{{Tag.tagName}}]</em>
                         </li>
                     </ul>
                 </span>
@@ -183,6 +183,10 @@ watch(refParamStore.HeadPortrait, (newValue, oldValue) => {
                     font-size: .75rem;
                     line-height: 1rem;
                     padding-left: 1rem;
+                    
+                    li{
+                        padding-right: 0.25rem;
+                    }
                 }
 
                 b {
