@@ -1,13 +1,10 @@
 <template>
-    <div v-if="ArticleData" class="article-container" @click="router.push({
-      path: 'ShowArticle',
-      query: { 'ArticleId': ArticleData.id }
-    })">
+    <div v-if="ArticleData" class="article-container">
         <span v-show="showTitle" class="article-tag">
             <b><fire-outlined /> Feature</b>
         </span>
         <div class="article">
-            <div class="article-thumbnail">
+            <div class="article-thumbnail" @click="ToDetail">
                 <img :src="ImgUrl + ArticleData.imageId" alt="">
                 <span class="thumbnail-screen"></span>
             </div>
@@ -20,14 +17,14 @@
                         </li>
                     </ul>
                 </span>
-                <h1>{{ArticleData.title}}</h1>
+                <h1 @click="ToDetail">{{ArticleData.title}}</h1>
                 <p>{{ArticleData.description}}</p>
 
                 <div class="article-footer">
                     <div class="flex-center">
                         <img :src="refPictureUrl" alt="">
                         <span class="text-color-dim">
-                            <strong class="text-color-normal">{{AuthorName}}</strong> 发布于 {{ArticleData.createDateTime}}
+                            <strong class="text-color-normal">{{AuthorName}}</strong> 发布于 {{new Date(ArticleData.createDateTime).toLocaleDateString()}}
                         </span>
                     </div>
                 </div>
@@ -62,6 +59,13 @@ const AuthorName = refParamStore.AuthorName;
 watch(refParamStore.HeadPortrait, (newValue, oldValue) => {
     refPictureUrl.value = `${newValue}`;
 })
+
+const ToDetail = () => {
+    router.push({
+        path: 'ShowArticle',
+        query: { 'ArticleId': ArticleData.id }
+    })
+}
 </script>
 <style scoped lang='less'>
 
@@ -101,6 +105,7 @@ watch(refParamStore.HeadPortrait, (newValue, oldValue) => {
             grid-row: span 1/span 1;
 
             img {
+                cursor: pointer;
                 background-repeat: no-repeat;
                 background-size: cover;
                 display: block;
@@ -155,6 +160,7 @@ watch(refParamStore.HeadPortrait, (newValue, oldValue) => {
 
 
             h1 {
+                cursor: pointer;
                 font-weight: 800;
                 font-size: 1.5rem;
                 line-height: 2rem;
@@ -219,7 +225,4 @@ watch(refParamStore.HeadPortrait, (newValue, oldValue) => {
     }
 }
 
-.article-container:hover {
-    cursor: pointer;
-}
 </style>

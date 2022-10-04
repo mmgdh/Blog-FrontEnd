@@ -166,7 +166,6 @@ const onFinish = (values: Article) => {
         ArticleService.prototype.ModifyArticle(formdata).then((res) => {
             if (res.msg != "") {
                 message.success("保存成功!");
-                console.log(res);
                 router.push("/ArticleManage");
             }
             else {

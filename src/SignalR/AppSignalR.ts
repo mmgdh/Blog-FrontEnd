@@ -20,7 +20,5 @@ connection.on("UpdateParameter", (paramId: string, paramValue: string) => {
     var index = AppStore.AllBlogParam.findIndex(x=>x.id==paramId)
     if(index>-1){
         AppStore.AllBlogParam[index].paramValue=paramValue
-        console.log('SignalR',AppStore.AllBlogParam)
     }
-    // console.log(paramValue)
 });

@@ -46,7 +46,7 @@ export const useArticleStore = defineStore('Article', {
       if(_RecommemtArticle.value){
         return _RecommemtArticle.value
       }
-      return state.CurPageArticles.splice(0, 2);
+      return state.CurPageArticles.slice(0, 2);
     }
   },
   actions: {
@@ -76,7 +76,6 @@ export const useArticleStore = defineStore('Article', {
         _TopArticle.value =ret.find(x=>x.id==TopArticleId?.toLowerCase());
         ArticleIds.pop()
         _RecommemtArticle.value=ret.filter(x=>ArticleIds.findIndex(y=>y.toLocaleLowerCase()==x.id)>-1);
-        console.log(_TopArticle,_RecommemtArticle);
       }
 
     },

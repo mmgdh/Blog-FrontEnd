@@ -1,13 +1,12 @@
 <template>
     <div class="article-container">
         <span class="article-tag">
-            <b><pushpin-outlined /> Top</b>
+            <b>
+                <pushpin-outlined /> Top
+            </b>
         </span>
-        <div v-if="articledata" class="feature-article" @click="router.push({
-          path: 'ShowArticle',
-          query: { 'ArticleId': articledata.id }
-        })">
-            <div class="feature-thumbnail">
+        <div v-if="articledata" class="feature-article">
+            <div class="feature-thumbnail" @click="ToDetail">
                 <img v-if="articledata" :src="ImgUrl + articledata.imageId" />
                 <img v-else src="../../../Img/backgroud.png" />
                 <span class="thumbnail-screen"></span>
@@ -19,13 +18,14 @@
                         <li><em>#{{tag.tagName}}</em></li>
                     </ul>
                 </span>
-                <h1>{{articledata.title}}</h1>
+                <h1 @click="ToDetail">{{articledata.title}}</h1>
                 <p>{{articledata.description}}</p>
                 <div class="article-footer">
                     <div class="flex-center">
                         <img :src="refPictureUrl" alt="">
                         <span class="text-color-dim">
-                            <strong class="text-color-normal">{{AuthorName}}</strong> 发布于 {{articledata.createDateTime}}
+                            <strong class="text-color-normal">{{AuthorName}}</strong> 发布于
+                            {{new Date(articledata.createDateTime).toLocaleDateString()}}
                         </span>
                     </div>
                 </div>
@@ -43,6 +43,7 @@ import UploadService from "../../../Services/UploadService"
 import { useAppStore } from '../../../Store/AppStore';
 import { storeToRefs } from 'pinia';
 import { PushpinOutlined } from '@ant-design/icons-vue';
+import { computed } from '@vue/reactivity';
 const ImgUrl = UploadService.prototype.getImageUri()
 let router = useRouter()
 const { articledata } = defineProps<{
@@ -53,13 +54,18 @@ const refParamStore = storeToRefs(ParamStore);
 var refPictureUrl = ref(`${refParamStore.HeadPortrait.value}`);
 const AuthorName = refParamStore.AuthorName;
 watch(refParamStore.HeadPortrait, (newValue, oldValue) => {
-    console.log('change')
     refPictureUrl.value = `${newValue}`;
 })
+console.log(articledata)
+const ToDetail = () => {
+    router.push({
+        path: 'ShowArticle',
+        query: { 'ArticleId': articledata.id }
+    })
+}
 </script>
 
 <style scoped lang="less">
-
 @import '../../../CSS/Article.less';
 
 @ComputerHeight: 28rem;
@@ -76,12 +82,13 @@ watch(refParamStore.HeadPortrait, (newValue, oldValue) => {
     top: 0;
     --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-    z-index: 1;
+    z-index: 99;
 
     .feature-thumbnail {
         position: relative;
 
         img {
+            cursor: pointer;
             background-repeat: no-repeat;
             background-size: cover;
             display: block;
@@ -165,6 +172,7 @@ watch(refParamStore.HeadPortrait, (newValue, oldValue) => {
             line-height: 2rem;
             margin-bottom: 1.5rem;
             color: var(--text-bright);
+            cursor: pointer;
         }
 
         .article-footer {

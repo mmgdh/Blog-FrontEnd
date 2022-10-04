@@ -26,7 +26,9 @@ docker run  -p 6379:6379 --name myredis -v /home/lqh/DockerData/RedisConf/redis.
 ### 5.成功执行
 
 ## 在linux上通过Docker搭建redis主从复制
- sudo docker run  -p 6380:6380 --link myredis:master --name myredis-slave1 -v /home/lqh/DockerData/RedisConf/redis-slave/redis.conf:/etc/redis/redis.conf -v /home/lqh/DockerData/RedisConf/data:/data -d redis redis-server /etc/redis/redis.conf
+主 sudo docker run  -d -p 6379:6379 --network=myNetwork  --name Blog-Redis -v /home/lqh/DockerData/RedisConf/redis.conf:/etc/redis/redis.conf  redis redis-server /etc/redis/redis.conf
+从 sudo docker run  -d -p 6380:6380 --network=myNetwork  --name Blog-Redis-Slave1 --link Blog-Redis:master -v /home/lqh/DockerData/RedisConf/redis-slave/redis.conf:/etc/redis/redis.conf  redis redis-server /etc/redis/redis.conf
+从 sudo docker run  -d -p 6381:6381 --network=myNetwork  --name Blog-Redis-Slave2 --link Blog-Redis:master -v /home/lqh/DockerData/RedisConf/redis-slave2/redis.conf:/etc/redis/redis.conf  redis redis-server /etc/redis/redis.conf
 
 
 

@@ -11,7 +11,7 @@ const ParamStore = useAppStore();
 const ArticleStore = useArticleStore();
 const router = useRouter();
 
-onMounted(async () => {
+onBeforeMount(async () => {
   ParamStore.GetAllParameter().then(() => {
     () => router.push('/BlogMain')
 });
