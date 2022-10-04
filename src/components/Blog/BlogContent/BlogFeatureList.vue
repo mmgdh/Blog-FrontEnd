@@ -13,7 +13,7 @@
       <span class="BoardBack"></span>
     </div>
     <ul>
-      <li v-for="article in Ref_ArticleList" :key="article.id">
+      <li v-for="article in ArticleStore.RecommemtArticle" :key="article.id">
         <ArticleCardVue :ArticleData="article" />
       </li>
     </ul>
@@ -32,9 +32,6 @@ let router = useRouter()
 let refStore = storeToRefs(ArticleStore);
 let ArticleList: any = undefined;
 let Ref_ArticleList = ref(ArticleList)
-refStore.RecommemtArticle.value.then(x => {
-  Ref_ArticleList.value = x;
-})
 </script>
 
 <style scoped lang="less">

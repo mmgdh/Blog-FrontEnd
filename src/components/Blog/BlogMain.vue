@@ -35,8 +35,10 @@ const AppStore = useAppStore()
 const refParamStore = storeToRefs(AppStore);
 AppStore.toggleTheme(true)
 
-let router = useRouter();
-router.push('/BlogIndex')
+// let router = useRouter();
+// onBeforeMount(()=>{
+//     router.push('/BlogIndex')
+// })
 AppStore.SetBannerImg('')
 
 const ICP=AppStore.GetParameterValue('Blog-ICP')

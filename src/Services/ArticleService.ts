@@ -44,7 +44,7 @@ export default class ArticleService {
         return await get(controler + "/GetArticleById", { id: _id, needContent: _needContent, needHtml: _needHtml })
     }
 
-    public async GetArticlesById(_id: string[], _needContent: boolean = false, _needHtml: boolean = false) {
+    public async GetArticlesById(_id: string[], _needContent: boolean = false, _needHtml: boolean = false):Promise<Article[]> {
         return await get(controler + "/GetArticlesById", { ids: _id, needContent: _needContent, needHtml: _needHtml })
     }
 

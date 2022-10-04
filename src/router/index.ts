@@ -1,11 +1,11 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 
 const routes: Array<RouteRecordRaw> = [
-    {
-        path: "/",
-        name: 'waiting',
-        component: () => import('../components/common/waiting.vue')
-    },
+    // {
+    //     path: "/",
+    //     name: 'waiting',
+    //     component: () => import('../components/Blog/BlogMain.vue'),
+    // },
     {
         path: "/BlogManage",
         name: 'BlogManage',
@@ -39,9 +39,10 @@ const routes: Array<RouteRecordRaw> = [
         ]
     },
     {
-        path: "/BlogMain",
+        path: "/",
         name: "BlogMain",
         component: () => import('../components/Blog/BlogMain.vue'),
+        redirect:'BlogIndex',
         children: [
             {
                 path: "/BlogIndex",

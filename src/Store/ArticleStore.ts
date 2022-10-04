@@ -9,7 +9,10 @@ import { useAppStore } from './AppStore'
 // useStore 可以是 useUser、useCart 之类的任何东西
 // 第一个参数是应用程序中 store 的唯一 id
 const ArticleArray: Article[] = [];
-
+const TopArticleTemp:any=undefined;
+const RecommondArticleTemp:any=undefined;
+let _TopArticle= ref(TopArticleTemp);
+let _RecommemtArticle= ref(RecommondArticleTemp)
 export const useArticleStore = defineStore('Article', {
   state: () => {
     return {
@@ -29,24 +32,19 @@ export const useArticleStore = defineStore('Article', {
         ClassifyIds: [],
         TagIds: [],
         CreateTime: {} as Date
-      } as ArticlePageRequest
+      } as ArticlePageRequest,
     }
   },
   getters: {
-    TopArticle: async (state): Promise<Article> => {
-      const AppStore = useAppStore();
-      var TopArticleId =await AppStore.GetParameterValueAsync('Blog-TopArticle');
-      if (TopArticleId) {
-        return await ArticleService.prototype.GetArticleById(TopArticleId);
+    TopArticle: (state): Article=> {
+      if(_TopArticle.value){
+        return _TopArticle.value
       }
       return state.CurPageArticles[0];
     },
-    RecommemtArticle: async (state): Promise<Article[]> => {
-      const AppStore = useAppStore();
-      var strArticleId = await AppStore.GetParameterValueAsync('Blog-RcommentArticle');
-      const ArticleIds = strArticleId?.split(',');
-      if (ArticleIds) {
-        return await ArticleService.prototype.GetArticlesById(ArticleIds);
+    RecommemtArticle: (state): Article[] => {
+      if(_RecommemtArticle.value){
+        return _RecommemtArticle.value
       }
       return state.CurPageArticles.splice(0, 2);
     }
@@ -66,6 +64,21 @@ export const useArticleStore = defineStore('Article', {
       var ret = await ArticleService.prototype.GetArticleByPage(this.PageRequestParm);
       this.CurPageArticles = ret.articles;
       this.CurArticleCount = ret.pageArticleCount ?? 0;
+    },
+    async GetIndexArticle() {
+      const AppStore = useAppStore();
+      var TopArticleId = await AppStore.GetParameterValueAsync('Blog-TopArticle');
+      var strArticleId = await AppStore.GetParameterValueAsync('Blog-RcommentArticle');
+      const ArticleIds = strArticleId?.split(',');
+      if (ArticleIds && TopArticleId) {
+        ArticleIds.push(TopArticleId)
+        var ret = await ArticleService.prototype.GetArticlesById(ArticleIds);
+        _TopArticle.value =ret.find(x=>x.id==TopArticleId?.toLowerCase());
+        ArticleIds.pop()
+        _RecommemtArticle.value=ret.filter(x=>ArticleIds.findIndex(y=>y.toLocaleLowerCase()==x.id)>-1);
+        console.log(_TopArticle,_RecommemtArticle);
+      }
+
     },
     ImgUrl(imgid: string) { return UploadService.prototype.getImageUri() + imgid }
   }

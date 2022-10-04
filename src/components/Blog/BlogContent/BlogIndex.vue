@@ -28,8 +28,16 @@ import TagsVue from './IndexRightContent/Tags.vue';
 import Notice from './IndexRightContent/Notice.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 import { useAppStore } from '../../../Store/AppStore'
+import { useArticleStore } from '../../../Store/ArticleStore'
+import { onBeforeMount } from 'vue';
 
 const AppStore = useAppStore();
+const ArticleStore = useArticleStore()
+
+onBeforeMount(() => {
+  ArticleStore.GetIndexArticle()
+})
+
 
 AppStore.SetBannerImg('')
 

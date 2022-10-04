@@ -56,9 +56,7 @@ const ParamStore = useAppStore();
 const ArticleStore =useArticleStore();
 const refParamStore = storeToRefs(ParamStore)
 var showTitle =ref(false)
-ArticleStore.RecommemtArticle.then(res=>{
-    showTitle.value=res.findIndex(x=>x.id==ArticleData.id)>-1
-})
+showTitle.value=ArticleStore.RecommemtArticle.findIndex(x=>x.id==ArticleData.id)>-1
 var refPictureUrl = ref(`${refParamStore.HeadPortrait.value}`);
 const AuthorName = refParamStore.AuthorName;
 watch(refParamStore.HeadPortrait, (newValue, oldValue) => {
