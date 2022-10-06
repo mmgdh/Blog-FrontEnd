@@ -68,7 +68,7 @@ const initTocbot = () => {
   while (loading) {
     if (content.value != null) {
       nextTick(() => {
-       var ret = tocbot.init({
+        var ret = tocbot.init({
           tocSelector: '#toc',
           contentSelector: '#markdownContent',
           headingSelector: 'h1, h2,h3',

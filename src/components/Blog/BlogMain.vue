@@ -77,6 +77,7 @@ a {
     padding-left: .75rem;
     padding-right: .75rem;
     .transition();
+    width: 100%
 }
 
 .BlogBody {

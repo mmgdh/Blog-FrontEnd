@@ -1,7 +1,7 @@
 <template>
     <Dialog v-model="refSearchStore.OpenSearch.value">
         <div class="SearchCSS">
-            <a-input class="search-Input" v-model:value="Refvalue" placeholder="input search loading deault"
+            <a-input class="search-Input" v-model:value="Refvalue" placeholder="search by Elastic Search"
                 @change="Searchfunc">
                 <template #prefix>
                     <search-outlined type="search" />
@@ -58,6 +58,7 @@ const Searchfunc = () => {
     if (Refvalue.value == '') return;
     const Search = new ArticleSearch()
     Search.keyword = Refvalue.value
+    Search.pageSize = 20
     SearchService.prototype.SearchArticle(Search).then(ret => {
         searchResults.value = ret.searchResult;
         TotalCount.value = ret.totalCount;
@@ -65,9 +66,9 @@ const Searchfunc = () => {
 }
 const jumpToDetail = (id: string) => {
     router.push({
-        path: '/ShowArticle/'+id
+        path: '/ShowArticle/' + id
     })
-    refSearchStore.OpenSearch.value=false
+    refSearchStore.OpenSearch.value = false
 }
 const handleOk = (e: MouseEvent) => {
     console.log(e);
@@ -77,7 +78,7 @@ const handleOk = (e: MouseEvent) => {
 
 <style lang="less">
 .SearchCSS {
-    width: 60rem;
+    max-width: 40rem;
 
     .search-Input {
         border-radius: 4px;
@@ -88,6 +89,8 @@ const handleOk = (e: MouseEvent) => {
             background-color: red;
         }
     }
+
+
 
     .search-show {
         margin-top: 0.5rem;
@@ -105,12 +108,23 @@ const handleOk = (e: MouseEvent) => {
 
         &::-webkit-scrollbar-thumb {
             border-radius: 4px;
-            ;
             background-color: white;
         }
 
-        // scrollbar-color: var(--search-modal-muted-color) var(--search-modal-background);
-        // scrollbar-width: thin;
+        .search-count {
+            background-color: var(--background-primary);
+            font-weight: 600;
+            font-size: .875rem;
+            line-height: 1.25rem;
+            padding-left: 0.25rem;
+            padding-right: 0.25rem;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            position: sticky;
+            top: 0;
+            color: var(--text-accent);
+            z-index: 10;
+        }
 
         section {
             ul {
@@ -135,6 +149,7 @@ const handleOk = (e: MouseEvent) => {
                         padding-left: 0.75rem;
                         --tw-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
                         box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+                        content: "";
                         width: 100%;
 
                         .search-li-container {
@@ -161,7 +176,7 @@ const handleOk = (e: MouseEvent) => {
                                 position: relative;
                                 text-overflow: ellipsis;
                                 white-space: nowrap;
-                                width: 80%;
+                                // width: 80%;
 
                                 .search-li-title {
                                     font-size: .75rem;
@@ -175,35 +190,17 @@ const handleOk = (e: MouseEvent) => {
                                     overflow: hidden;
                                     text-overflow: ellipsis;
                                     white-space: nowrap;
-                                    width: 91.666667%;
+                                    // width: 91.666667%;
+
+                                    em {
+                                        font-size: large;
+                                        color: var(--text-accent);
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-        }
-
-
-        .search-count {
-            background-color: var(--background-primary);
-            font-weight: 600;
-            font-size: .875rem;
-            line-height: 1.25rem;
-            padding-left: 0.25rem;
-            padding-right: 0.25rem;
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
-            position: sticky;
-            top: 0;
-            color: var(--text-accent);
-            z-index: 10;
-        }
-
-        .search-li-text {
-            em {
-                font-size: large;
-                color: var(--text-accent);
             }
         }
     }
