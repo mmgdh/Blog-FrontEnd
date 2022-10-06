@@ -58,7 +58,7 @@ const ToDate = (DateTime: Date) => {
 <style scoped lang="less">
 .ArticleList {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(1, minmax(0,1fr));
   gap: 2rem;
 
 }
@@ -67,13 +67,13 @@ const ToDate = (DateTime: Date) => {
 
 @media (min-width: 768px) {
   .ArticleList {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0,1fr));
   }
 }
 
 @media (min-width: 1280px) {
   .ArticleList {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0,1fr));
   }
 
 }

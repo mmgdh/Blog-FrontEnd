@@ -17,8 +17,7 @@
 import { computed, ref } from 'vue'
 import Toggle from './Toggle.vue'
 import { useAppStore } from '../../../../Store/AppStore'
-import { BulbOutlined } from '@ant-design/icons-vue';
-import { BulbFilled } from '@ant-design/icons-vue';
+import { BulbOutlined,BulbFilled } from '@ant-design/icons-vue';
 // import {SunOne,Moon} from '@icon-park/vue-next';
 
 const appStore = useAppStore()
@@ -38,7 +37,6 @@ const handleChange = (status: boolean) => {
 
 <style lang="less" scoped>
 .iconStyle {
-  margin-left: 3.5px;
   .light{
     color: yellow;
   }

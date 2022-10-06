@@ -50,7 +50,7 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import('../components/Blog/BlogContent/BlogIndex.vue'),
             },
             {
-                path: "/ShowArticle",
+                path: "/ShowArticle/:id",
                 name: "ShowArticle",
                 component: () => import('../components/Blog/Article/ShowArticle.vue')
             },

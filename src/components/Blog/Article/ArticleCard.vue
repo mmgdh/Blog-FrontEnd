@@ -62,8 +62,7 @@ watch(refParamStore.HeadPortrait, (newValue, oldValue) => {
 
 const ToDetail = () => {
     router.push({
-        path: 'ShowArticle',
-        query: { 'ArticleId': ArticleData.id }
+        path: '/ShowArticle/'+ArticleData.id
     })
 }
 </script>

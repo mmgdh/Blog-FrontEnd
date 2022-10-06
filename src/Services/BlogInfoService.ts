@@ -8,7 +8,7 @@ export default class BlogInfoService {
         return await post(controler + "/AddBlogParameter", parames)
     }
 
-    public async DelBlogParameter(id: string): Promise<boolean> {
+    public async DelBlogParameter(id: string): Promise<boolean> { 
         return await Delete(controler + "/DelBlogParameter", { id: id })
     }
 

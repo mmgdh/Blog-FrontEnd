@@ -33,7 +33,7 @@
         <Catalog class="right-box">
           <div id="toc" class="tocbotCss">刷新</div>
         </Catalog>
-
+        <!-- <div @click="tocbot.refresh();">refresh</div> -->
 
       </div>
     </div>
@@ -43,77 +43,80 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, onBeforeUnmount, nextTick, onUpdated, watch } from 'vue';
+import { ref, reactive, onMounted, onBeforeUnmount, nextTick, onUpdated, watch, onBeforeMount } from 'vue';
 import MdEditor from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
-import { useRoute } from 'vue-router'
+import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import ArticleService from '../../../Services/ArticleService'
 import { useAppStore } from '../../../Store/AppStore';
 import { storeToRefs } from 'pinia';
 import Introduction from '../BlogContent/IndexRightContent/Introduction.vue'
 import Catalog from '../BlogContent/IndexRightContent/catalog.vue'
 import * as tocbot from 'tocbot'
+import { bool } from 'vue-types';
 let router = useRoute();
 let ArticleId: string;
 let content = ref('');
 let _Article: any = undefined
-
+let CurArticle = ref(_Article)
 onBeforeUnmount(() => {
   tocbot.destroy()
 })
-const IsLoadingOver = ref()
 const initTocbot = () => {
-  // var nodes =document.getElementById('md-editor-v3-preview')?.children as HTMLCollection
-  // // let nodes = articleRef.value.children
-  // console.log(nodes,articleRef.value);
-  // if (nodes.length) {
-  //   for (let i = 0; i < nodes.length; i++) {
-  //     let node = nodes[i]
-  //     let reg = /^H[1-6]{1}$/
-  //     if (reg.exec(node.tagName)) {
-  //       node.id = i.toString()
-  //     }
-  //   }
-  // }
 
-
-  tocbot.init({
-    tocSelector: '#toc',
-    contentSelector: '#markdownContent',
-    headingSelector: 'h1, h2,h3',
-    scrollSmooth: true,
-    // scrollSmoothOffset: -300,
-    headingsOffset: -400,
-    onClick: function (e) {
-      e.preventDefault()
+  let loading = true
+  while (loading) {
+    if (content.value != null) {
+      nextTick(() => {
+       var ret = tocbot.init({
+          tocSelector: '#toc',
+          contentSelector: '#markdownContent',
+          headingSelector: 'h1, h2,h3',
+          scrollSmooth: true,
+          // scrollSmoothOffset: -300,
+          headingsOffset: -400,
+          onClick: function (e) {
+            e.preventDefault()
+          }
+        })
+      })
+      loading = false
     }
-  })
-  // const imgs = articleRef.value.getElementsByTagName('img')
-  // for (var i = 0; i < imgs.length; i++) {
-  //   reactiveData.images.push(imgs[i].src)
-  //   imgs[i].addEventListener('click', function (e: any) {
-  //     handlePreview(e.target.currentSrc)
-  //   })
-  // }
+  }
+
+  setTimeout(() => {
+    tocbot.refresh();
+  }, 500);
+
+
 }
 const AppStore = useAppStore();
 const refAppStore = storeToRefs(AppStore);
 
-let CurArticle = ref(_Article)
-ArticleId = router.query.ArticleId as string;
-
-ArticleService.prototype.GetArticleById(ArticleId, true, true).then(ret => {
-  CurArticle.value = ret;
-  content.value = ret.content;
-  AppStore.SetBannerImg(ret.imageId)
-  window.scrollTo({
-    top: 0
-  })
-  nextTick(() => {
-    initTocbot()
-    IsLoadingOver.value = true
-  })
+onBeforeMount(() => {
+  ArticleId = router.params.id as string
+  GetArtilcFunc();
 });
+
+onBeforeRouteUpdate((to) => {
+  if (to.params.id != ArticleId) {
+    ArticleId = to.params.id as string
+    GetArtilcFunc();
+  }
+})
+
+const GetArtilcFunc = () => {
+  ArticleService.prototype.GetArticleById(ArticleId, true, true).then(ret => {
+    console.log(ret)
+    CurArticle.value = ret;
+    content.value = ret.content;
+    AppStore.SetBannerImg(ret.imageId)
+    window.scrollTo({
+      top: 0
+    })
+    initTocbot()
+  });
+}
 </script>
 <style lang="less">
 @import '../../../CSS/Box.less';

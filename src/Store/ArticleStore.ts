@@ -36,11 +36,11 @@ export const useArticleStore = defineStore('Article', {
     }
   },
   getters: {
-    TopArticle: (state): Article=> {
+    TopArticle: (state): Article|undefined=> {
       if(_TopArticle.value){
         return _TopArticle.value
       }
-      return state.CurPageArticles[0];
+      return undefined;
     },
     RecommemtArticle: (state): Article[] => {
       if(_RecommemtArticle.value){

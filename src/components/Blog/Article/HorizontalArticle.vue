@@ -15,7 +15,7 @@
                 <span>
                     <b> {{articledata.classify.classifyName}} </b>
                     <ul v-for="tag in articledata.tags">
-                        <li><em>#{{tag.tagName}}</em></li>
+                        <li><em>[{{tag.tagName}}]</em></li>
                     </ul>
                 </span>
                 <h1 @click="ToDetail">{{articledata.title}}</h1>
@@ -36,19 +36,19 @@
 </template>
 
 <script setup lang='ts'>
-import { ref, onBeforeMount, watch } from 'vue'
+import { ref, onBeforeMount, watch, toRef } from 'vue'
 import { useRouter } from 'vue-router'
 import { Article } from '../../../Entities/E_Article';
 import UploadService from "../../../Services/UploadService"
 import { useAppStore } from '../../../Store/AppStore';
 import { storeToRefs } from 'pinia';
 import { PushpinOutlined } from '@ant-design/icons-vue';
-import { computed } from '@vue/reactivity';
 const ImgUrl = UploadService.prototype.getImageUri()
 let router = useRouter()
-const { articledata } = defineProps<{
-    articledata: Article
+const props = defineProps<{
+    articledata: Article | undefined
 }>()
+let articledata =toRef(props,"articledata");
 const ParamStore = useAppStore();
 const refParamStore = storeToRefs(ParamStore);
 var refPictureUrl = ref(`${refParamStore.HeadPortrait.value}`);
@@ -56,12 +56,13 @@ const AuthorName = refParamStore.AuthorName;
 watch(refParamStore.HeadPortrait, (newValue, oldValue) => {
     refPictureUrl.value = `${newValue}`;
 })
-console.log(articledata)
 const ToDetail = () => {
-    router.push({
-        path: 'ShowArticle',
-        query: { 'ArticleId': articledata.id }
-    })
+    if (articledata.value) {
+        router.push({
+            path: '/ShowArticle/' + articledata.value.id
+        })
+    }
+
 }
 </script>
 
