@@ -59,6 +59,9 @@ const AuthorName = refParamStore.AuthorName;
 watch(refParamStore.HeadPortrait, (newValue, oldValue) => {
     refPictureUrl.value = `${newValue}`;
 })
+watch(refParamStore.AllBlogParam.value,()=>{
+    showTitle.value=ArticleStore.RecommemtArticle.findIndex(x=>x.id==ArticleData.id)>-1
+})
 
 const ToDetail = () => {
     router.push({

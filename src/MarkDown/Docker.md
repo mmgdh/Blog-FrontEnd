@@ -40,3 +40,10 @@ docker update --restart=always 容器名或容器ID
 
 # Portainer
 docker run -d -p 9000:9000 --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /home/lqh/DockerData/portainer/Data:/data --name portainer portainer/portainer
+
+# 搭建自定义网段
+docker network create -d bridge --subnet 172.18.0.0/16 mynet
+# 使用自定义网段
+sudo docker run -d --name Blog-ArticleService --network=myNetwork  --env-file env  --ip 172.18.0.10 article-service
+# 复制容器内文件
+sudo docker cp SQLServer2:/var/opt/mssql /home/lqh/DockerData/sqlserver/bak/

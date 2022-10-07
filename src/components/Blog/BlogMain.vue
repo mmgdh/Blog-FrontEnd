@@ -23,10 +23,11 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import BlogMenu from './BlogHeader/BlogMenu.vue'
 import { useRouter } from 'vue-router'
 import '../../SignalR/AppSignalR'
-import { onBeforeMount, onMounted } from 'vue';
+import { onBeforeMount, onMounted, watch } from 'vue';
 import { useAppStore } from '../../Store/AppStore'
 import { computed } from '@vue/reactivity';
 import { storeToRefs } from 'pinia';
@@ -41,11 +42,13 @@ AppStore.toggleTheme(true)
 // })
 AppStore.SetBannerImg('')
 
-const ICP=AppStore.GetParameterValue('Blog-ICP')
-
+let ICP = ref('')
+watch(refParamStore.AllBlogParam, () => {
+    ICP.value = AppStore.GetParameterValue('Blog-ICP') as string
+})
 const BackGroundImg = computed(() => {
     if (AppStore.BackGroudImgUrl == '') {
-        return {opacity: 1};
+        return { opacity: 1 };
     }
     else {
         return {

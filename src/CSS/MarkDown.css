@@ -2,6 +2,10 @@
   word-wrap: break-word;
   word-break: break-all;
 }
+#md-editor-v3-preview strong,
+#md-editor-v3-preview li::marker {
+  color: var(--text-accent);
+}
 #md-editor-v3-preview p,
 #md-editor-v3-preview pre {
   margin-top: 0.75rem;
