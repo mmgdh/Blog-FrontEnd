@@ -1,19 +1,18 @@
 <template>
   <div class="login-container">
     <a-form :model="form" class="login-form" @finish="onSubmit">
+      <home-outlined title="回到主页" class="Home" @click="router.push('/')" />
       <h1 class="title">LOGIN</h1>
       <a-form-item name="userName">
         <a-input v-model:value="form.userName">
-          <a-icon slot="prefix" type="user" />
         </a-input>
       </a-form-item>
       <a-form-item name="passWord">
         <a-input-password v-model:value="form.passWord">
-          <a-icon slot="prefix" type="unlock" />
         </a-input-password>
       </a-form-item>
       <a-form-item>
-        <a-button shape="round" class="submit" html-type="submit">保存</a-button>
+        <a-button shape="round" class="submit" html-type="submit">登录</a-button>     
       </a-form-item>
     </a-form>
     <ul class="bg-bubbles">
@@ -27,6 +26,7 @@ import { ref } from 'vue';
 import { UserLogin } from '../../Entities/E_Users.js';
 import UserLoginService from '../../Services/UserLoginService.js';
 import { useRouter } from 'vue-router';
+import { HomeOutlined } from '@ant-design/icons-vue';
 
 let router = useRouter()
 var _form: UserLogin = {
@@ -49,6 +49,14 @@ const onSubmit = (value: UserLogin) => {
 
 </script>
 <style scoped lang="less">
+.Home{
+  position:absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 2rem;
+  color: #fff;
+  cursor: pointer;
+}
   /* 背景 */
 .login-container {
   /* background: url("../../assets/BackGroud.jpg") no-repeat; */
@@ -87,7 +95,12 @@ const onSubmit = (value: UserLogin) => {
   padding: 40px 110px;
 
 }
-
+@media (max-width: 500px){
+  .login-form{
+    width: 90%;
+    padding: 20px 40px
+  }
+} ;
 /* 登陆按钮 */
 .submit {
   width: 100%;

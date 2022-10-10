@@ -1,24 +1,31 @@
 <template>
-  <ul class="ClassifyTab">
-    <li id="All" class="active">
-      <span :style="activeTabStyle('All')" @click="clickFunc('All')">全部</span>
-      <b>{{AllArticleCount}}</b>
-    </li>
-    <li v-for="classify in ArticleClassifies" :key="classify.id">
-      <span :style="activeTabStyle(classify.id)" @click="clickFunc(classify.id)">
-        {{classify.classifyName}}
-      </span>
-      <b>{{classify.articleCount}}</b>
-    </li>
-  </ul>
+  <div class="ClassifyTabContainer">
+    <ul :class="ExpandedCSS">
+      <li id="All" class="active">
+        <span :style="activeTabStyle('All')" @click="clickFunc('All')">全部</span>
+        <b>{{AllArticleCount}}</b>
+      </li>
+      <li v-for="classify in ArticleClassifies" :key="classify.id">
+        <span :style="activeTabStyle(classify.id)" @click="clickFunc(classify.id)">
+          {{classify.classifyName}}
+        </span>
+        <b>{{classify.articleCount}}</b>
+      </li>
+    </ul>
+    <span>
+      <menu-outlined class="TabExpandCSS" @click="ExpandedFunc" />
+    </span>
+  </div>
+
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, toRefs, onBeforeMount, onMounted, watchEffect, computed, watch } from 'vue';
+import { ref, computed, reactive } from 'vue';
 import { ArticleClassify } from '../../../Entities/E_Article';
 import { useArticleStore } from '../../../Store/ArticleStore';
 import { useAppStore } from '../../../Store/AppStore';
 import { storeToRefs } from 'pinia';
+import { MenuOutlined } from '@ant-design/icons-vue';
 const ArticleStore = useArticleStore();
 const AppStore = useAppStore();
 
@@ -28,6 +35,15 @@ ArticleClassifies = refArticleStore.Classifies;
 let AllArticleCount = refArticleStore.AllArticleCount;
 
 let activeTabId = ref('All')
+
+let Expanded = ref(true)
+let ExpandedCSS = reactive({
+  ClassifyTab: true,
+  ExpandedTab: false
+})
+const ExpandedFunc = () => {
+  ExpandedCSS.ExpandedTab = !ExpandedCSS.ExpandedTab
+}
 
 const clickFunc = (Id: string) => {
   activeTabId.value = Id
@@ -47,6 +63,22 @@ const activeTabStyle = (ClassifyId: any) => {
 }
 </script>
 <style lang="less">
+.ClassifyTabContainer {
+  position: relative;
+}
+
+.TabExpandCSS {
+  cursor: pointer;
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  stroke: currentColor;
+  color: var(--text-bright);
+  opacity: .8;
+}
+
+
+
 .ClassifyTab {
   background-color: var(--background-secondary);
   border-radius: 1rem;
@@ -61,6 +93,11 @@ const activeTabStyle = (ClassifyId: any) => {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   height: 3.5rem;
   transition: height .4s ease;
+
+  &.ExpandedTab {
+    overflow-y: initial;
+    height: auto;
+  }
 
   li {
     cursor: pointer;

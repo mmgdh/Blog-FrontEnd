@@ -87,6 +87,7 @@ const ToDetail = () => {
 .article-container {
     border-radius: 1rem;
     height: 100%;
+    width: 100%;
     list-style-type: none;
     position: relative;
 
@@ -98,7 +99,7 @@ const ToDetail = () => {
         overflow: hidden;
         position: relative;
         top: 0;
-        --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05);
+        // --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05);
         box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
         z-index: 10;
         grid-template-rows: repeat(3, minmax(0, 1fr));
@@ -155,7 +156,7 @@ const ToDetail = () => {
             padding-left: 1.5rem;
             padding-right: 1.5rem;
             padding-bottom: 1.5rem;
-            position: relative;
+            // position: relative;
             z-index: 40;
             grid-row: span 2/span 2;
 
@@ -175,7 +176,7 @@ const ToDetail = () => {
 
             p {
                 overflow: hidden;
-                text-overflow: ellipsis;
+                // text-overflow: ellipsis;
                 display: -webkit-box;
                 -webkit-line-clamp: 5;
                 -webkit-box-orient: vertical;
