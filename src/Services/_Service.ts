@@ -2,8 +2,8 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { message } from 'ant-design-vue';
 import qs from 'qs'
 
-const BaseURL='http://118.195.172.226:88'
-// const BaseURL='http://localhost:83'
+// const BaseURL='http://118.195.172.226:88'
+const BaseURL='http://localhost:83'
 
 const service = axios.create({
   // 联调
@@ -68,13 +68,19 @@ service.interceptors.response.use((response: AxiosResponse) => {
   return Promise.resolve(error)
 })
 
+/* 同步Get方法
+*/
+export function get(url:string,params: any = undefined, timeout: number = 1000 * 60 * 5) :any{
+  return service.get(url)
+}
+
 /**
  * get 请求方法
  * @param url
  * @param params
  * @returns {Promise}
  */
-export function get(url: any, params: any = undefined, timeout: number = 1000 * 60 * 5): any {
+export function getAsync(url: any, params: any = undefined, timeout: number = 1000 * 60 * 5): any {
   return new Promise((resolve, reject) => {
     let method: Promise<any>;
     if (params) {

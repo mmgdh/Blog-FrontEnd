@@ -1,4 +1,4 @@
-import { get, post, Delete, put } from './_Service'
+import { getAsync, post, Delete, put } from './_Service'
 import { Article, ArticleTag } from '../Entities/E_Article'
 
 
@@ -41,27 +41,27 @@ export default class ArticleService {
 
     //Get请求
     public async GetArticleById(_id: string, _needContent: boolean = false, _needHtml: boolean = false) {
-        return await get(controler + "/GetArticleById", { id: _id, needContent: _needContent, needHtml: _needHtml })
+        return await getAsync(controler + "/GetArticleById", { id: _id, needContent: _needContent, needHtml: _needHtml })
     }
 
     public async GetArticlesById(_id: string[], _needContent: boolean = false, _needHtml: boolean = false):Promise<Article[]> {
-        return await get(controler + "/GetArticlesById", { ids: _id, needContent: _needContent, needHtml: _needHtml })
+        return await getAsync(controler + "/GetArticlesById", { ids: _id, needContent: _needContent, needHtml: _needHtml })
     }
 
     async GetAllArticleTags() {
-        return await get(controler + '/GetAllTags', { NeedCount: true })
+        return await getAsync(controler + '/GetAllTags', { NeedCount: true })
     }
 
     async GetArticleByPage(parames: any) {
-        return await get(controler + '/GetArticleByPage', parames);
+        return await getAsync(controler + '/GetArticleByPage', parames);
     }
 
     public async GetAllArticleClassify() {
-        return await get(controler + '/GetAllArticleClassify')
+        return await getAsync(controler + '/GetAllArticleClassify')
     }
 
     public async GetArticleCount() {
-        return await get(controler + '/GetArticleCount');
+        return await getAsync(controler + '/GetArticleCount');
     }
 
 }

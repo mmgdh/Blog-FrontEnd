@@ -8,7 +8,7 @@
   </ul>
 
   <div class="PageStyle">
-    <a-pagination :show-quick-jumper="false" v-model="refPage.page" :total="ArticleCount" :page-size='pageRequest.pageSize'
+    <a-pagination :show-quick-jumper="false" v-model:current="refPage.page" :total="ArticleCount" :page-size='pageRequest.pageSize'
       show-less-items @change="onChange" class="paginationCSS" />
   </div>
 </template>
@@ -46,11 +46,6 @@ let pageRequest = refStore.PageRequestParm;
 //页码改变
 const onChange = (pageNumber: number) => {
   refPage.value.page = pageNumber;
-}
-//日期转换
-const ToDate = (DateTime: Date) => {
-  let NewDate = new Date(DateTime);
-  return NewDate.toLocaleDateString();
 }
 
 </script>

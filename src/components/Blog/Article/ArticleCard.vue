@@ -1,11 +1,13 @@
 <template>
-    <div v-if="ArticleData" class="article-container">
+    <div class="article-container">
         <span v-show="showTitle" class="article-tag">
-            <b><fire-outlined /> Feature</b>
+            <b>
+                <fire-outlined /> Feature
+            </b>
         </span>
         <div class="article">
             <div class="article-thumbnail" @click="ToDetail">
-                <img :src="ImgUrl + ArticleData.imageId" alt="">
+                <img v-if="ArticleData.id!=''" v-lazy="ImgUrl + ArticleData.imageId" alt="">
                 <span class="thumbnail-screen"></span>
             </div>
             <div class="article-content">
@@ -24,7 +26,8 @@
                     <div class="flex-center">
                         <img :src="refPictureUrl" alt="">
                         <span class="text-color-dim">
-                            <strong class="text-color-normal">{{AuthorName}}</strong> 发布于 {{new Date(ArticleData.createDateTime).toLocaleDateString()}}
+                            <strong class="text-color-normal">{{AuthorName}}</strong> 发布于 {{new
+                            Date(ArticleData.createDateTime).toLocaleDateString()}}
                         </span>
                     </div>
                 </div>
@@ -50,27 +53,26 @@ const { ArticleData } = defineProps<{
     ArticleData: Article
 }>()
 const ParamStore = useAppStore();
-const ArticleStore =useArticleStore();
+const ArticleStore = useArticleStore();
 const refParamStore = storeToRefs(ParamStore)
-var showTitle =ref(false)
-showTitle.value=ArticleStore.RecommemtArticle.findIndex(x=>x.id==ArticleData.id)>-1
+var showTitle = ref(false)
+showTitle.value = ArticleStore.RecommemtArticle.findIndex(x => x.id == ArticleData.id) > -1
 var refPictureUrl = ref(`${refParamStore.HeadPortrait.value}`);
 const AuthorName = refParamStore.AuthorName;
 watch(refParamStore.HeadPortrait, (newValue, oldValue) => {
     refPictureUrl.value = `${newValue}`;
 })
-watch(refParamStore.AllBlogParam.value,()=>{
-    showTitle.value=ArticleStore.RecommemtArticle.findIndex(x=>x.id==ArticleData.id)>-1
+watch(refParamStore.AllBlogParam.value, () => {
+    showTitle.value = ArticleStore.RecommemtArticle.findIndex(x => x.id == ArticleData.id) > -1
 })
 
 const ToDetail = () => {
     router.push({
-        path: '/ShowArticle/'+ArticleData.id
+        path: '/ShowArticle/' + ArticleData.id
     })
 }
 </script>
 <style scoped lang='less'>
-
 @import '../../../CSS/Article.less';
 
 @media (min-width: 1024px) {
@@ -114,9 +116,8 @@ const ToDetail = () => {
                 -o-object-fit: cover;
                 object-fit: cover;
                 position: absolute;
-                left: 0;
-                width: 120%;
                 height: 120%;
+                width: 100%;
                 z-index: 20;
 
             }
@@ -176,8 +177,8 @@ const ToDetail = () => {
                 overflow: hidden;
                 text-overflow: ellipsis;
                 display: -webkit-box;
-                -webkit-line-clamp:5;
-                -webkit-box-orient:vertical;
+                -webkit-line-clamp: 5;
+                -webkit-box-orient: vertical;
                 font-size: 1rem;
             }
 
@@ -189,8 +190,8 @@ const ToDetail = () => {
                     font-size: .75rem;
                     line-height: 1rem;
                     padding-left: 1rem;
-                    
-                    li{
+
+                    li {
                         padding-right: 0.25rem;
                     }
                 }
@@ -226,5 +227,4 @@ const ToDetail = () => {
         }
     }
 }
-
 </style>

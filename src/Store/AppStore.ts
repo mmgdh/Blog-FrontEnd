@@ -45,7 +45,8 @@ export const useAppStore = defineStore('AppStore', {
     },
     actions: {
         async GetAllParameter() {
-            this.AllBlogParam = await BlogInfoService.prototype.GetAllBlogParameters();
+            this.AllBlogParam =await BlogInfoService.prototype.GetAllBlogParameters();
+            return this.AllBlogParam;
         },
         GetParameterValue(paramName: string) {
 

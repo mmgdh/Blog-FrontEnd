@@ -13,7 +13,7 @@
             <div class="FootContainer">
                 <div class="FootContent">
                     <p>个人博客系统</p>
-                    <p>公安备案：{{ICP}}</p>
+                    <p>公安备案：{{refParamStore.AllBlogParam.value.find(x=>x.paramName =='Blog-ICP')?.paramValue}}</p>
                 </div>
 
             </div>
@@ -41,11 +41,6 @@ AppStore.toggleTheme(true)
 //     router.push('/BlogIndex')
 // })
 AppStore.SetBannerImg('')
-
-let ICP = ref('')
-watch(refParamStore.AllBlogParam, () => {
-    ICP.value = AppStore.GetParameterValue('Blog-ICP') as string
-})
 const BackGroundImg = computed(() => {
     if (AppStore.BackGroudImgUrl == '') {
         return { opacity: 1 };

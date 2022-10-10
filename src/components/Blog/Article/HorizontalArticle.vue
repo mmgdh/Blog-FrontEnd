@@ -5,13 +5,13 @@
                 <pushpin-outlined /> Top
             </b>
         </span>
-        <div v-if="articledata" class="feature-article">
+        <div  class="feature-article">
             <div class="feature-thumbnail" @click="ToDetail">
-                <img v-if="articledata" :src="ImgUrl + articledata.imageId" />
-                <img v-else src="../../../Img/backgroud.png" />
+                <img v-if="articledata.id!=''" v-lazy="ImgUrl + articledata.imageId" />
+                <!-- <img v-else src="../../../Img/backgroud.png" /> -->
                 <span class="thumbnail-screen"></span>
             </div>
-            <div class="feature-content" v-if="articledata">
+            <div class="feature-content">
                 <span>
                     <b> {{articledata.classify.classifyName}} </b>
                     <ul v-for="tag in articledata.tags">
@@ -46,9 +46,9 @@ import { PushpinOutlined } from '@ant-design/icons-vue';
 const ImgUrl = UploadService.prototype.getImageUri()
 let router = useRouter()
 const props = defineProps<{
-    articledata: Article | undefined
+    articledata: Article
 }>()
-let articledata =toRef(props,"articledata");
+let articledata = toRef(props, "articledata");
 const ParamStore = useAppStore();
 const refParamStore = storeToRefs(ParamStore);
 var refPictureUrl = ref(`${refParamStore.HeadPortrait.value}`);

@@ -22,7 +22,7 @@ import { storeToRefs } from 'pinia';
 const ArticleStore = useArticleStore();
 const AppStore = useAppStore();
 
-let ArticleClassifies = ref({} as Array<ArticleClassify>);
+let ArticleClassifies = ref(new Array<ArticleClassify>);
 let refArticleStore = storeToRefs(ArticleStore)
 ArticleClassifies = refArticleStore.Classifies;
 let AllArticleCount = refArticleStore.AllArticleCount;

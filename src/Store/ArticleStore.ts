@@ -1,52 +1,29 @@
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import { defineStore } from 'pinia'
 import { ArticleTag, ArticleClassify, Article, ArticlePageRequest } from '../Entities/E_Article'
 import ArticleService from '../Services/ArticleService'
 import UploadService from "../Services/UploadService"
 import { useAppStore } from './AppStore'
+import { Empty } from 'ant-design-vue'
 
 
 // useStore 可以是 useUser、useCart 之类的任何东西
 // 第一个参数是应用程序中 store 的唯一 id
-const ArticleArray: Article[] = [];
-const TopArticleTemp:any=undefined;
-const RecommondArticleTemp:any=undefined;
-let _TopArticle= ref(TopArticleTemp);
-let _RecommemtArticle= ref(RecommondArticleTemp)
+var EmptyArticle =new Array<Article>()
+EmptyArticle.push(new Article())
+EmptyArticle.push(new Article())
 export const useArticleStore = defineStore('Article', {
   state: () => {
     return {
 
-      Tags: {
-
-      } as Array<ArticleTag>,
-      Classifies: {
-
-      } as Array<ArticleClassify>,
+      Tags: new Array<ArticleTag>,
+      Classifies: new Array<ArticleClassify>,
       CurArticleCount: 0,
-      CurPageArticles: ArticleArray,
+      CurPageArticles: new Array<Article>(),
       AllArticleCount: 0,
-      PageRequestParm: {
-        page: 1,
-        pageSize: 10,
-        ClassifyIds: [],
-        TagIds: [],
-        CreateTime: {} as Date
-      } as ArticlePageRequest,
-    }
-  },
-  getters: {
-    TopArticle: (state): Article|undefined=> {
-      if(_TopArticle.value){
-        return _TopArticle.value
-      }
-      return undefined;
-    },
-    RecommemtArticle: (state): Article[] => {
-      if(_RecommemtArticle.value){
-        return _RecommemtArticle.value
-      }
-      return state.CurPageArticles.slice(0, 2);
+      PageRequestParm: new ArticlePageRequest(1,10),
+      TopArticle: new Article(),
+      RecommemtArticle: EmptyArticle
     }
   },
   actions: {
@@ -73,9 +50,9 @@ export const useArticleStore = defineStore('Article', {
       if (ArticleIds && TopArticleId) {
         ArticleIds.push(TopArticleId)
         var ret = await ArticleService.prototype.GetArticlesById(ArticleIds);
-        _TopArticle.value =ret.find(x=>x.id==TopArticleId?.toLowerCase());
+        this.TopArticle = ret.find(x => x.id == TopArticleId?.toLowerCase()) ?? new Article;
         ArticleIds.pop()
-        _RecommemtArticle.value=ret.filter(x=>ArticleIds.findIndex(y=>y.toLocaleLowerCase()==x.id)>-1);
+        this.RecommemtArticle = ret.filter(x => ArticleIds.findIndex(y => y.toLocaleLowerCase() == x.id) > -1);
       }
 
     },

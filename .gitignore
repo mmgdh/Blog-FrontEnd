@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.vs/ProjectSettings.json
+.vs/slnx.sqlite
+.vs/VSWorkspaceState.json
+.vs/Blog-FrontEnd/FileContentIndex/25bca7bc-b0a0-4174-839a-5610cce329a8.vsidx
+.vs/Blog-FrontEnd/FileContentIndex/c15c07af-8b26-47fc-8946-a537fc7bf18a.vsidx
+.vs/Blog-FrontEnd/FileContentIndex/read.lock

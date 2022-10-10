@@ -1,36 +1,41 @@
 
-export interface Article {
-    id: string,
-    title: string,
-    content: string,
-    html:string,
-    classify: ArticleClassify,
-    createDateTime: Date,
-    tags: Array<ArticleTag>,
-    pinYin: string,
-    description:string,
-    imageId:string
+export class Article {
+
+    id: string = '';
+    title: string = '';
+    content: string = '';
+    html: string = '';
+    classify: ArticleClassify = new ArticleClassify();
+    createDateTime: Date = new Date;
+    tags: Array<ArticleTag> = new Array<ArticleTag>();
+    pinYin: string = '';
+    description = '';
+    imageId = '';
 }
 
-export interface ArticleTag {
-    tagName: string,
-    id: string,
-    pinYin: string,
-    articleCount:number
+export class ArticleTag {
+    tagName: string = '';
+    id: string = '';
+    pinYin: string = '';
+    articleCount: number = 0;
 }
 
-export interface ArticleClassify {
-    id: string,
-    classifyName: string,
-    pinYin: string,
-    articleCount: number,
-    imgId:string
+export class ArticleClassify {
+    id: string = '';
+    classifyName: string = '';
+    pinYin: string = '';
+    articleCount: number = 0;
+    imgId: string = '';
 }
 
-export interface ArticlePageRequest {
-    page: number,
-    pageSize: number,
-    ClassifyIds: Array<string>,
-    TagIds: Array<string>,
-    CreateTime: Date
+export class ArticlePageRequest {
+    constructor(_page:number,_pageSize:number){
+        this.page=_page,
+        this.pageSize=_pageSize
+    }
+    page = 1;
+    pageSize = 9;
+    ClassifyIds: Array<string> = new Array<string>()
+    TagIds: Array<string> = new Array<string>()
+    CreateTime: Date = new Date
 }
