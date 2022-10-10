@@ -5,8 +5,8 @@ ef core 是基于ado.net core 的
 ef core将语句转化为sql语句，再由ado.net与数据库进行沟通
 
 # EF Core 三种开发模式
-1. Code First
-2. Database First
+1. Code First(个人偏爱在推荐，中小项目敏捷开发首选)
+2. Database First（使用大型项目）
 3. Model First
 
 # 表特性配置的两种方式
@@ -159,3 +159,67 @@ A.B=b
 dbContext.A.add(A)
 
 ```
+
+## 3.修改
+> EF Core 的修改只要对实体做了修改，那么在savechange的时候也会跟着修改。
+但是在修改关联表的时候，需要查出关联表数据再修改，通过include修改其数据无法被追踪到
+```
+基本修改,将A表标题改为123,后面默认执行SaveChange()
+A a =dbContext.A.first()
+a.title='123'
+```
+## 4.删除
+> EF Core 的删除很方便，直接调用Remove即可，删除记录会把其他关联的表的该记录移除
+```
+A a = dbContext.A.first()
+dbContext.remove(a);
+savechange();
+```
+
+# IEnumerable 和 IQueryable
+IEnumerable 是已经将数据从数据库取出来后
+IQueryable 还未将数据从数据库取出来,是延时查询
+因此我们要将where等筛选逻辑写到tolist等转IEnumerable之前，也因为Iqueryable在tolist之前只是表达式，我们可以在执行前对它随意操作，写一些公共方法，实现动态查询逻辑
+```
+        public async Task<Article?> GetArticleByIdAsync(Guid ArticleId, bool NeedContent, bool NeedHtml)
+        {
+            return await GetArticleQueryAble(NeedContent, NeedHtml).FirstOrDefaultAsync(x => x.Id == ArticleId);
+        }
+
+        public async Task<Article[]?> GetArticlesByIdAsync(Guid[] Ids, bool NeedContent, bool NeedHtml)
+        {
+
+            return await GetArticleQueryAble(NeedContent, NeedHtml).Where(x => Ids.Contains(x.Id)).ToArrayAsync();
+        }
+
+        public IQueryable<Article> GetArticleQueryAble(bool NeedContent, bool NeedHtml)
+        {
+            var linq = dbCtx.Articles.Include(x => x.Classify).Include(x => x.Tags).AsQueryable();
+            if (NeedContent) linq = linq.Include(x => x.articleContent);
+            if (NeedHtml) linq = linq.Include(x => x.articleHtml);
+            return linq;
+        }
+```
+
+# 执行原生的非查询语句
+使用dbcontext.Database.ExcuteSqlInterpolated()和其Async方法。
+记得使用内插值写法，EF Core会自动处理，防止Sql注入
+
+# EF Core 对实体的监控
+由DbContext查询出的实体默认都会被赋予监控，监控其状态，实体一共有如下几个状态
+1. 已添加(Added)：DbContext正在跟踪此实体，但数据库中尚不存在该实体。
+2. 未改变(Unchanged)：DbContext正在跟踪此实体，该实体存在于数据库中，其属性值和从数据库中读取到的值一致，未发生改变。
+3. 已修改(Modified)：DbContext正在跟踪此实体，并存在于数据库中，并且其部分或全部属性值已修改。
+4. 已删除(Deleted)：DbContext正在跟踪此实体，并存在于数据库中，但在下次调用 SaveChanges 时要从数据库中删除对应数据。
+5. 已分离(Detached)：DbContext未跟踪该实体。
+----
+“已分离”和“未改变”的实体，SaveChanges()忽略；
+“已添加”的实体，SaveChanges() 插入数据库；
+“已修改”的实体，SaveChanges() 更新到数据库；
+“已删除”的实体，SaveChanges() 从数据库删除；
+
+可以通过DbContext的Entry()方法来获得实体在EF Core中的跟踪信息对象EntityEntry
+
+# 全局查询筛选器
+可以在fluentAPi方法内 添加 HasQueryFilter 实现全局筛选过滤，比较经典的例子为软删除判断IsDeleted
+Builder.HasQueryFilter(x=>x.isDeleted!=1);
