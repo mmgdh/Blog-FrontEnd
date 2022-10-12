@@ -4,6 +4,7 @@ import { BlogParam } from '../Entities/E_BlogParam'
 import BlogInfoService from '../Services/BlogInfoService'
 import UploadService from '../Services/UploadService'
 import * as signalR from "@microsoft/signalr";
+import cookies from 'js-cookie'
 
 
 
@@ -11,6 +12,7 @@ import * as signalR from "@microsoft/signalr";
 
 const setTheme = (theme: string) => {
     document.documentElement.setAttribute('data-theme', theme)
+    cookies.set('BlogTheme', theme, { expires: 7 })
 }
 
 let BlogParamArray: BlogParam[] = [];
@@ -45,7 +47,7 @@ export const useAppStore = defineStore('AppStore', {
     },
     actions: {
         async GetAllParameter() {
-            this.AllBlogParam =await BlogInfoService.prototype.GetAllBlogParameters();
+            this.AllBlogParam = await BlogInfoService.prototype.GetAllBlogParameters();
             return this.AllBlogParam;
         },
         GetParameterValue(paramName: string) {
@@ -61,7 +63,7 @@ export const useAppStore = defineStore('AppStore', {
 
         toggleTheme(isDark?: boolean) {
             this.themeConfig.theme =
-                isDark === true || this.themeConfig.theme === 'theme-light' ? 'theme-dark' : 'theme-light'
+                isDark === true ? 'theme-dark' : 'theme-light'
             // Cookies.set('theme', this.theme)
             setTheme(this.themeConfig.theme)
         },

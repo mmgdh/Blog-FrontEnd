@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, inject, getCurrentInstance } from 'vue'
 import BlogMenu from './BlogHeader/BlogMenu.vue'
 import { useRouter } from 'vue-router'
 import '../../SignalR/AppSignalR'
@@ -31,10 +31,11 @@ import { onBeforeMount, onMounted, watch } from 'vue';
 import { useAppStore } from '../../Store/AppStore'
 import { computed } from '@vue/reactivity';
 import { storeToRefs } from 'pinia';
+import cookies from 'js-cookie'
 
 const AppStore = useAppStore()
 const refParamStore = storeToRefs(AppStore);
-AppStore.toggleTheme(true)
+AppStore.toggleTheme(cookies.get('BlogTheme')=='theme-dark')
 
 // let router = useRouter();
 // onBeforeMount(()=>{

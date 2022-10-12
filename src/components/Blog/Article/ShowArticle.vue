@@ -16,7 +16,7 @@
             <img :src="refAppStore.HeadPortrait.value" alt="">
             <span class="text-color-dim">
               <strong class="text-color-normal">{{refAppStore.AuthorName.value}}</strong> 发布于
-              {{CurArticle.createDateTime}}
+              {{new Date(CurArticle.createDateTime).toLocaleDateString()}}
             </span>
           </div>
         </div>
