@@ -21,7 +21,7 @@ export const useArticleStore = defineStore('Article', {
       CurArticleCount: 0,
       CurPageArticles: new Array<Article>(),
       AllArticleCount: 0,
-      PageRequestParm: new ArticlePageRequest(1,10),
+      PageRequestParm: new ArticlePageRequest(1,9),
       TopArticle: new Article(),
       RecommemtArticle: EmptyArticle
     }

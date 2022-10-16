@@ -2,6 +2,9 @@
   word-wrap: break-word;
   word-break: break-all;
 }
+#md-editor-v3-preview table tr:nth-child(2n) {
+  background-color: var(--background-secondary);
+}
 #md-editor-v3-preview strong,
 #md-editor-v3-preview li::marker {
   color: var(--text-accent);

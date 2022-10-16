@@ -137,7 +137,7 @@ const ToDetail = () => {
             }
         }
 
-        .article-thumbnail:after {
+        .article-thumbnail::after {
             pointer-events: none;
             content: "";
             position: absolute;

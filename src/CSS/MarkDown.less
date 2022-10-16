@@ -2,10 +2,18 @@
     word-wrap: break-word;
     word-break: break-all;
 
-    strong,li::marker{
+    table tr:nth-child(2n) {
+
+        background-color: var(--background-secondary);
+    }
+
+    strong,
+    li::marker {
         color: var(--text-accent);
     }
-    p,pre {
+
+    p,
+    pre {
         margin-top: 0.75rem;
         margin-bottom: 0.75rem;
         line-height: 2;
@@ -142,4 +150,6 @@
         content: "";
         background: var(--header_gradient_css);
     }
+
+
 }

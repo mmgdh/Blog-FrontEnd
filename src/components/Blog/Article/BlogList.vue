@@ -8,13 +8,13 @@
   </ul>
 
   <div class="PageStyle">
-    <a-pagination :show-quick-jumper="false" v-model:current="refPage.page" :total="ArticleCount" :page-size='pageRequest.pageSize'
-      show-less-items @change="onChange" class="paginationCSS" />
+    <a-pagination :show-quick-jumper="false" v-model:current="refPage.page" :total="ArticleCount"
+      :page-size='pageRequest.pageSize' show-less-items @change="onChange" class="paginationCSS" />
   </div>
 </template>
 
 <script setup lang='ts'>
-import { ref, onBeforeMount, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useArticleStore } from '../../../Store/ArticleStore'
 import { storeToRefs } from 'pinia';
 import ArticleCardVue from './ArticleCard.vue';
@@ -35,11 +35,14 @@ watch(ArticleCount, (newvalue, oldvalue) => {
     ShowQuikJumper.value = true;
   }
 })
+onMounted(() => {
+  ArticleStore.GetArticleByPage();
+  // ArticleStore.$patch((state) => {
+  //   state.PageRequestParm.page = 1;
+  //   state.PageRequestParm.pageSize = 9
+  // });
+})
 
-ArticleStore.$patch((state) => {
-  state.PageRequestParm.page = 1;
-  state.PageRequestParm.pageSize = 9
-});
 
 
 let pageRequest = refStore.PageRequestParm;
@@ -53,7 +56,7 @@ const onChange = (pageNumber: number) => {
 <style scoped lang="less">
 .ArticleList {
   display: grid;
-  grid-template-columns: repeat(1, minmax(0,1fr));
+  grid-template-columns: repeat(1, minmax(0, 1fr));
   gap: 2rem;
 
 }
@@ -62,19 +65,19 @@ const onChange = (pageNumber: number) => {
 
 @media (min-width: 768px) {
   .ArticleList {
-    grid-template-columns: repeat(2, minmax(0,1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 1280px) {
   .ArticleList {
-    grid-template-columns: repeat(3, minmax(0,1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
 }
 
 .PageStyle {
-  
+
   display: flex;
   align-items: center;
   justify-content: center;
