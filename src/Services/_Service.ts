@@ -3,7 +3,7 @@ import { message } from 'ant-design-vue';
 import qs from 'qs'
 
 // const BaseURL='http://118.195.172.226:88'
-const BaseURL='http://localhost:83'
+const BaseURL='http://localhost:80'
 
 const service = axios.create({
   // 联调
