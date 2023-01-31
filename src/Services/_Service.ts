@@ -2,8 +2,8 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { message } from 'ant-design-vue';
 import qs from 'qs'
 
-// const BaseURL='http://118.195.172.226:88'
-const BaseURL='http://localhost:80'
+const BaseURL='http://118.195.172.226:88'
+// const BaseURL='http://localhost:80'
 
 const service = axios.create({
   // 联调
@@ -41,26 +41,26 @@ service.interceptors.request.use((config: AxiosRequestConfig) => {
 })
 
 // 响应拦截器
-service.interceptors.response.use((response: AxiosResponse) => {
-  const status = response.status
+service.interceptors.response.use((response: any) => {
+  const code = response.code
   let msg = ''
-  if (status < 200 || status >= 300) {
+  if (code < 200 || code >= 300) {
     // 处理http错误，抛到业务代码
     if (response.data == "" || response.data) {
-      msg = showStatus(status)
+      msg = showStatus(code)
     }
     else {
-      msg = response.data
+      msg = response.message
     }
 
     message.warn(msg);
-    if (typeof response.data === 'string') {
-      response.data = { msg }
-    } else {
-      response.data.msg = msg
-    }
+    // if (typeof response.data === 'string') {
+    //   response.data = { msg }
+    // } else {
+    //   response.data.msg = msg
+    // }
   }
-  return response
+  return response.data
 }, (error) => {
   // 错误抛到业务代码
   error.data = {}

@@ -13,7 +13,7 @@
             <div class="FootContainer">
                 <div class="FootContent">
                     <p>个人博客系统</p>
-                    <p>公安备案：{{refParamStore.AllBlogParam.value.find(x=>x.paramName =='Blog-ICP')?.paramValue}}</p>
+                    <p><a href="https://beian.miit.gov.cn/">公安备案：{{refParamStore.AllBlogParam.value.find(x=>x.paramName =='Blog-ICP')?.paramValue}}</a></p>
                 </div>
 
             </div>

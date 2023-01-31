@@ -35,6 +35,11 @@ const routes: Array<RouteRecordRaw> = [
                 path: "/BlogParameter",
                 name: 'BlogParameter',
                 component: () => import('../components/Background/BlogParamManage.vue')
+            },
+            {
+                path: "/FrindLinkManage",
+                name: 'FrindLinkManage',
+                component: () => import('../components/Background/FriendLinkManage.vue')
             }
         ]
     },
@@ -42,7 +47,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/",
         name: "BlogMain",
         component: () => import('../components/Blog/BlogMain.vue'),
-        redirect:'BlogIndex',
+        redirect: 'BlogIndex',
         children: [
             {
                 path: "/BlogIndex",

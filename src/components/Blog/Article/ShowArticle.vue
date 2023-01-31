@@ -129,6 +129,9 @@ const GetArtilcFunc = () => {
   flex-direction: column;
   z-index: 10;
 }
+.md-editor{
+  color: unset;
+}
 
 .main-grid {
   display: flex;

@@ -32,6 +32,7 @@
             </span>
           </template>
           <a-menu-item key="8" @click="topage('/BlogParameter')">参数管理</a-menu-item>
+          <a-menu-item key="8-1" @click="topage('/FrindLinkManage')">友链管理</a-menu-item>
           <a-menu-item key="9" @click="topage('/')">回到主页</a-menu-item>
         </a-sub-menu>
       </a-menu>

@@ -12,6 +12,7 @@
       <div class="IndexRightContent">
         <Introduction></Introduction>
         <TagsVue class="right-box"></TagsVue>
+        <friendLinkVue class="right-box"></friendLinkVue>
         <Notice class="right-box"></Notice>
       </div>
     </div>
@@ -26,6 +27,7 @@ import BlogFeatureVue from './BlogFeature.vue';
 import Title from '../../common/Title.vue';
 import TagsVue from './IndexRightContent/Tags.vue';
 import Notice from './IndexRightContent/Notice.vue';
+import friendLinkVue from './IndexRightContent/friendLink.vue';
 import { FileTextOutlined } from '@ant-design/icons-vue';
 import { useAppStore } from '../../../Store/AppStore'
 import { useArticleStore } from '../../../Store/ArticleStore'

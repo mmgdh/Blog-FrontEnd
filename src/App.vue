@@ -14,7 +14,7 @@ onBeforeMount(async () => {
     await ArticleStore.GetTags();
     await ArticleStore.GetClassifies();
     await ArticleStore.GetArticleCount();
-
+    
   }
 )
 </script>
